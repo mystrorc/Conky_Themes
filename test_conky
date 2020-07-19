@@ -1,0 +1,108 @@
+# stitched other people's conf files together
+
+# conky package by qaisar nawaz
+# Conky settings #
+background no
+update_interval 1
+double_buffer yes
+no_buffers yes
+
+# Window specifications #
+own_window yes
+own_window_type dock
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_title
+own_window_colour 000000
+own_window_argb_visual yes
+own_window_argb_value 0
+minimum_size 266 114
+
+# Alignment #
+alignment top_right
+gap_x 0
+gap_y 50
+
+border_inner_margin 8
+border_outer_margin 0
+
+# Graphics settings #
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_graph_size 40,150
+show_graph_scale no
+show_graph_range no
+
+# Text settings #
+use_xft yes
+xftalpha 0
+xftfont Open Sans Light:size=9
+
+# Color scheme #
+default_color ffffff
+
+color1 ffffff
+color2 444444
+color3 669900
+color4 333333
+color5 0099CC
+
+
+own_window_transparent yes
+
+TEXT
+${voffset -2}${font Open Sans Light:bold:size=9}HARD DRIVES$font
+${hr 1}
+${font Open Sans Light:bold:size=9}${color0}SYSTEM ${hr 2}
+${font Open Sans Light:size=9}${offset 15}$sysname $kernel
+${offset 15}$nodename
+${offset 15}Uptime: ${uptime}
+
+${goto 10}${voffset 5}CPU1: ${cpu cpu1}%${alignr 5}${exec sensors|grep 'Core 0'|awk '{print $3}'}
+${goto 10}${voffset -5}${color5}${cpugraph cpu1 35,275 66241C 0099CC}
+${goto 10}${voffset 0}${color1}CPU2: ${cpu cpu2}%${alignr 5}${exec sensors|grep 'Core 1'|awk '{print $3}'}
+${goto 10}${voffset -5}${color5}${cpugraph cpu2 35,275 66241C 0099CC}
+${goto 10}${color1}${voffset 5}CPU3: ${cpu cpu1}%${alignr 5}${exec sensors|grep 'Core 2'|awk '{print $3}'}
+${goto 10}${voffset -5}${color5}${cpugraph cpu3 35,275 66241C 0099CC}
+${goto 10}${voffset 0}${color1}CPU3: ${cpu cpu2}%${alignr 5}${exec sensors|grep 'Core 3'|awk '{print $3}'}
+${goto 10}${voffset -5}${color5}${cpugraph cpu4 35,275 66241C 0099CC}
+${color1}RAM ${alignr 5}$mem / $memmax
+${color5}${membar 15}
+
+${color1}SWAP ${alignr 5}$swap / $swapmax
+${color5}${swapbar 15}
+
+${color1}ROOT ${alignr 5}$fs_used / $fs_size
+${color5}${fs_bar 15}
+
+${color1}${voffset -2}${font Open Sans Light:bold:size=9}MOUNTS$font
+${color1}E ${alignr}${color5}${fs_bar 12,200 /mnt/e}
+${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/e} free$color$font
+${color1}F ${alignr}${color5}${fs_bar 12,200 /mnt/f}
+${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/f} free$color$font
+${color1}PLEX ${alignr}${color5}${fs_bar 12,200 //mnt/plex}
+${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/plex}$color$font
+
+${font Open Sans Light:bold:size=9}PROCESSES$font${voffset -5}
+${hr 1}
+${goto 10}${voffset -2}Total Processes ${font}${alignr 10}$processes
+
+GRAPHICS ${hr 2}
+${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits} $color
+GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq}
+#${image ~/.conky/Randy/nvidia_1060.jpg -p 240,413}
+${color1}Temp        :   ${if_match ${nvidia temp} < 65}${color3}${else}${color5}${endif}${nvidia temp} C
+${color1}Mem Clock   :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${color5}${endif}${nvidia memfreq}
+${color1}GPU Useage  :   ${color3}${execi 5 nvidia-settings -tq GPUUtilization | grep -o 'graphics=[0-9]*' | sed -e 's/graphics=//'}%
+${color5}${nvidiabar 10 gpuutil}
+
+${color1}${font Open Sans Light:bold:size=9}NETWORK$font${voffset -5}
+${hr 1}
+Local IP${alignr 10}${addr enp4s0}
+NordVPN  : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Discon${else}${color3}Connect${endif} $alignr${color grey}Ext IP: $color${exec curl ipinfo.io/ip}
+WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Discon${else}${color3}Connect${endif} $alignr${color grey}Ext IP: $color${exec curl ipinfo.io/ip}
+${color1}Up:  ${upspeed enp4s0} / ${totalup enp4s0}
+${color5}${upspeedgraph enp4s0 20,275 4B1B0C FF5C2B 100 -l}
+${color1}Down:  ${downspeed enp4s0} / ${totaldown enp4s0}
+${color5}${downspeedgraph enp4s0 20,275 324D23 77B753 100 -l}
