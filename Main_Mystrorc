@@ -98,7 +98,7 @@ ${nvidiabar 10 gpuutil}$color
 #
 ${font font MesloLGS Regular:bold:12}CONNECTIONS ${hr 2}${font}
 Network  : $color${wireless_essid enp4s0} ${alignr}IP:   ${addrs enp4s0}
-NordVPN  : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
+NordVPN   : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
-Up:  ${upspeed enp4s0} / ${totalup enp4s0}   Down:  ${downspeed enp4s0} / ${totaldown enp4s0}
+Up:  ${upspeed enp4s0} / ${totalup enp4s0}              Down:  ${downspeed enp4s0} / ${totaldown enp4s0}
 ${color6}${upspeedgraph enp4s0 20,180 4B1B0C FF5C2B 100 -l}   ${color6}${downspeedgraph enp4s0 20,180 324D23 77B753 100 -l}

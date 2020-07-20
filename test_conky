@@ -55,6 +55,7 @@ ${font Open Sans Light:bold:size=9}${color0}SYSTEM ${hr 2}$font
 $sysname $kernel
 $nodename
 Uptime: ${uptime}
+${font Open Sans Light:bold:size=9}${color0}CPU ${hr 2}$font
 ${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${alignr}Speed ${freq_g}GHz
 ${goto 10}${voffset 5}CPU1: ${cpu cpu1}%${alignr 5}${exec sensors|grep 'Core 0'|awk '{print $3}'}
 ${goto 10}${voffset -5}${color5}${cpugraph cpu1 35,275 66241C 0099CC}
