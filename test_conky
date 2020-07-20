@@ -19,9 +19,8 @@ minimum_size 266 114
 
 # Alignment #
 alignment top_right
-gap_x 0
+gap_x 5
 gap_y 50
-
 border_inner_margin 8
 border_outer_margin 0
 
@@ -52,13 +51,11 @@ color5 0099CC
 own_window_transparent yes
 
 TEXT
-${voffset -2}${font Open Sans Light:bold:size=9}HARD DRIVES$font
-${hr 1}
-${font Open Sans Light:bold:size=9}${color0}SYSTEM ${hr 2}
-${font Open Sans Light:size=9}${offset 15}$sysname $kernel
-${offset 15}$nodename
-${offset 15}Uptime: ${uptime}
-
+${font Open Sans Light:bold:size=9}${color0}SYSTEM ${hr 2}$font
+$sysname $kernel
+$nodename
+Uptime: ${uptime}
+${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${alignr}Speed ${freq_g}GHz
 ${goto 10}${voffset 5}CPU1: ${cpu cpu1}%${alignr 5}${exec sensors|grep 'Core 0'|awk '{print $3}'}
 ${goto 10}${voffset -5}${color5}${cpugraph cpu1 35,275 66241C 0099CC}
 ${goto 10}${voffset 0}${color1}CPU2: ${cpu cpu2}%${alignr 5}${exec sensors|grep 'Core 1'|awk '{print $3}'}
@@ -76,19 +73,17 @@ ${color5}${swapbar 15}
 ${color1}ROOT ${alignr 5}$fs_used / $fs_size
 ${color5}${fs_bar 15}
 
-${color1}${voffset -2}${font Open Sans Light:bold:size=9}MOUNTS$font
+${color1}${voffset -2}${font Open Sans Light:bold:size=9}MOUNTS${hr 2}${font}
 ${color1}E ${alignr}${color5}${fs_bar 12,200 /mnt/e}
 ${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/e} free$color$font
 ${color1}F ${alignr}${color5}${fs_bar 12,200 /mnt/f}
 ${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/f} free$color$font
 ${color1}PLEX ${alignr}${color5}${fs_bar 12,200 //mnt/plex}
-${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/plex}$color$font
+${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/plex} free$color$font
+${color1}Downloads${alignr}${color5}${fs_bar 12,200 //mnt/Downloads}
+${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/Downloads} free$color$font
 
-${font Open Sans Light:bold:size=9}PROCESSES$font${voffset -5}
-${hr 1}
-${goto 10}${voffset -2}Total Processes ${font}${alignr 10}$processes
-
-GRAPHICS ${hr 2}
+${color1}${font Open Sans Light:bold:size=9}GRAPHICS ${hr 2}${font}
 ${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits} $color
 GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq}
 #${image ~/.conky/Randy/nvidia_1060.jpg -p 240,413}
@@ -97,12 +92,11 @@ ${color1}Mem Clock   :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${co
 ${color1}GPU Useage  :   ${color3}${execi 5 nvidia-settings -tq GPUUtilization | grep -o 'graphics=[0-9]*' | sed -e 's/graphics=//'}%
 ${color5}${nvidiabar 10 gpuutil}
 
-${color1}${font Open Sans Light:bold:size=9}NETWORK$font${voffset -5}
-${hr 1}
+${color1}${font Open Sans Light:bold:size=9}NETWORK${hr 2}${font}
 Local IP${alignr 10}${addr enp4s0}
-NordVPN  : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Discon${else}${color3}Connect${endif} $alignr${color grey}Ext IP: $color${exec curl ipinfo.io/ip}
-WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Discon${else}${color3}Connect${endif} $alignr${color grey}Ext IP: $color${exec curl ipinfo.io/ip}
+NordVPN  : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color1}Disconnected${else}${color5}Connected${endif} $alignr${color1}${exec curl ipinfo.io/ip}
+WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color1}Disconnected${else}${color5}Connected${endif} $alignr${color1}$color${exec curl ipinfo.io/ip}
 ${color1}Up:  ${upspeed enp4s0} / ${totalup enp4s0}
-${color5}${upspeedgraph enp4s0 20,275 4B1B0C FF5C2B 100 -l}
+${color5}${upspeedgraph enp4s0 20,275 66241C 0099CC -l}
 ${color1}Down:  ${downspeed enp4s0} / ${totaldown enp4s0}
-${color5}${downspeedgraph enp4s0 20,275 324D23 77B753 100 -l}
+${color5}${downspeedgraph enp4s0 20,275 66241C 0099CC 100 -l}
