@@ -86,10 +86,9 @@ ${voffset -18}${offset 5}${color}${alignr}$color${fs_free /mnt/Downloads} free$c
 
 ${color1}${font Open Sans Light:bold:size=9}GRAPHICS ${hr 2}${font}
 ${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits} $color
-GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq}
-#${image ~/.conky/Randy/nvidia_1060.jpg -p 240,413}
-${color1}Temp        :   ${if_match ${nvidia temp} < 65}${color3}${else}${color5}${endif}${nvidia temp} C
-${color1}Mem Clock   :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${color5}${endif}${nvidia memfreq}
+GPU Clock     :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq}
+${color1}Temp           :   ${if_match ${nvidia temp} < 65}${color3}${else}${color5}${endif}${nvidia temp} C
+${color1}Mem Clock    :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${color5}${endif}${nvidia memfreq}
 ${color1}GPU Useage  :   ${color3}${execi 5 nvidia-settings -tq GPUUtilization | grep -o 'graphics=[0-9]*' | sed -e 's/graphics=//'}%
 ${color5}${nvidiabar 10 gpuutil}
 
