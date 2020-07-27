@@ -58,25 +58,23 @@ ${color0}${membar 10}
 $color${font Open Sans:bold:size=8.5}Used:$alignr$font $mem of $memmax
 $color${font Open Sans:bold:size=8.5}Free:$alignr$font $memeasyfree
 $color${font Open Sans:bold:size=8.5}Buffers / Cached:$alignr$font$buffers / $cached
-
-${voffset -10}------------------------------------------------- ${font Open Sans:Bold:size=10}${color0}${voffset -2}RAM${color}${font}${voffset -1} ---- ${font Open Sans:Bold:size=10}${color0}${voffset -2}CPU${color}${font}${voffset -1} -
-${top_mem name 1}${alignr}${top_mem cpu 1} %
-${voffset -13}${alignr}${offset -60}${top_mem mem 1} %
-${top_mem name 2}${alignr}${top_mem cpu 2} %
-${voffset -13}${alignr}${offset -60}${top_mem mem 2} %
+#${voffset -10}------------------------------------------------- ${font Open Sans:Bold:size=10}${color0}${voffset -2}RAM${color}${font}${voffset -1} ---- ${font Open Sans:Bold:size=10}${color0}${voffset -2}CPU${color}${font}${voffset -1} -
+#${top_mem name 1}${alignr}${top_mem cpu 1} %
+#${voffset -13}${alignr}${offset -60}${top_mem mem 1} %
+#${top_mem name 2}${alignr}${top_mem cpu 2} %
+#${voffset -13}${alignr}${offset -60}${top_mem mem 2} %
 
 # CPU
 ${voffset -8}${font Open Sans:Bold:size=12}${color0}CPU ${color EC0100}${hr 3}
 $color${font}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq}   ${freq_g cpu0}GHz $alignr $cpu%
 ${font}Core 1  ${color3}${execi 4 sensors | grep 'Core 0' | cut -c18-24} ${alignc 60}${color0}${cpubar cpu0 10}${color}
 ${font}Core 2  ${color3}${execi 4 sensors | grep 'Core 1' | cut -c18-24} ${alignc 60}${color0}${cpubar cpu1 10}${color}
-
-${voffset -10}------------------------------------------------- ${font Open Sans:Bold:size=10}${color0}${voffset -2}RAM${color}${font}${voffset -1} ---- ${font Open Sans:Bold:size=10}${color0}${voffset -2}CPU${color}${font}${voffset -1} -
+#${voffset -10}------------------------------------------------- ${font Open Sans:Bold:size=10}${color0}${voffset -2}RAM${color}${font}${voffset -1} ---- ${font Open Sans:Bold:size=10}${color0}${voffset -2}CPU${color}${font}${voffset -1} -
 #${hr 1}
-${top name 1}${alignr}${top cpu 1} %
-${voffset -13}${alignr}${offset -60}${top mem 1} %
-${top name 2}${alignr}${top cpu 2} %
-${voffset -13}${alignr}${offset -60}${top mem 2} %
+#${top name 1}${alignr}${top cpu 1} %
+#${voffset -13}${alignr}${offset -60}${top mem 1} %
+#${top name 2}${alignr}${top cpu 2} %
+#${voffset -13}${alignr}${offset -60}${top mem 2} %
 
 # NETWORK
 ${font Open Sans:Bold:size=12}${color0}NETWORK ${color EC0100}${hr 3}$color
@@ -93,8 +91,6 @@ ${color aaddff}write: ${diskio_write /dev/sdc}${color6}${alignc -20} read:${disk
 ${color0}${fs_bar /}${color}
 
 # Mounted
-#the script in the following line does not seem to function
-${exec 10 ~/semplice-conky-harddisks.sh}
 ${voffset -8}${font Open Sans:Bold:size=12}${color0}Disk Mounts ${color1}${hr 3}$color$font
 
 ${voffset -10}${font Open Sans:bold:size=8.5}HOME $font$alignr ${fs_type /home}
