@@ -60,8 +60,8 @@ color8 FEBB26   # LSU Gold
 color9 76b900   # NVIDIA Green
 
 TEXT
-${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/forecast/daily?APPID=52988146207f81ce31ebc54ff6a4ad16&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/forecast.json}
-${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/weather?APPID=52988146207f81ce31ebc54ff6a4ad16&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/weather.json}
+${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/forecast/daily?APPID=&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/forecast.json}
+${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/weather?APPID=5&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/weather.json}
 ${font MesloLGS Regular:pixelsize=24}${time %A}, ${time %B} ${time %d}
    ${time %I:%M}
 #${font DejaVu Sans Mono:size=12}${execpi 1800 DA=`date +%_d`; cal}
