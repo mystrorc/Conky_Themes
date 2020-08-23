@@ -11,7 +11,7 @@ alignment bottom_left
 
 border_width 1
 cpu_avg_samples 2
-default_color white
+default_color eeba30
 default_outline_color white
 default_shade_color white
 draw_borders no
@@ -48,46 +48,64 @@ show_graph_range no
 use_xft yes
 xftalpha 0.1
 xftfont MesloLGS Regular:size=9
-color0 white
-color1 A2C66E
-color2 C7C7C7
-color3 7CA642
-color4 D6D6D8   #Green
-color5 CB1215
-color6 7CA642
-color7 C0D343
+color0 740001   # Bars
+color1 ae0001   # Titles
+color2 740001   # Gryffindor Maroon
+color3 ae0001   # Gryffindor Red
+color4 eeba30   # Gryffindor Yellow
+color5 d3a625   # Gryffindor dark Yellow
+color6 000000   # Gryffindor Black
+color7 461D7C   # LSU Purple
+color8 FEBB26   # LSU Gold
+color9 76b900   # NVIDIA Green
 
 TEXT
-${font MesloLGS Regular:pixelsize=36}${time %A}, ${time %B} ${time %d}
-${color3}   ${time %I:%M}
-${color0}${font MesloLGS Regular:bold:12}SYSTEM ${hr 2}${font}
+${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/forecast/daily?APPID=52988146207f81ce31ebc54ff6a4ad16&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/forecast.json}
+${execi 300 l=en_US.UTF-8; l=${l%%_*}; curl -s "api.openweathermap.org/data/2.5/weather?APPID=52988146207f81ce31ebc54ff6a4ad16&id=4346788&cnt=5&units=imperial&lang=$l" -o ~/.cache/weather.json}
+${font MesloLGS Regular:pixelsize=24}${time %A}, ${time %B} ${time %d}
+   ${time %I:%M}
+#${font DejaVu Sans Mono:size=12}${execpi 1800 DA=`date +%_d`; cal}
+${execi 300 jq -r ".name" ~/.cache/weather.json}, ${execi 300 jq -r .main.temp ~/.cache/weather.json | awk '{print int($1+0.5)}' # round num}°, ${execi 300 jq -r .weather[0].description ~/.cache/weather.json | sed 's|\<.|\U&|g'}
+${execi 300 cp -f ~/.conky/weather/$(jq .list[0].weather[0].id ~/.cache/forecast.json).png ~/.cache/weather-1.png}${image ~/.cache/weather-1.png -p 250,40 -s 120x72}${font}
+
+
+${goto 24}${execi 300 LANG=en_US.UTF-8 LC_TIME=en_US.UTF-8 date -d +1day +%^A}\
+${goto 152}${execi 300 LANG=en_US.UTF-8 LC_TIME=en_US.UTF-8 date -d +2days +%^A}\
+${goto 280}${execi 300 LANG=en_US.UTF-8 LC_TIME=en_US.UTF-8 date -d +3days +%^A}\
+
+${goto 34}${execi 300 jq .list[1].temp.max ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C / ${execi 300 jq .list[1].temp.min ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C\
+${goto 162}${execi 300 jq .list[2].temp.max ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C / ${execi 300 jq .list[2].temp.min ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C\
+${goto 290}${execi 300 jq .list[3].temp.max ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C / ${execi 300 jq .list[3].temp.min ~/.cache/forecast.json | awk '{print int($1+0.5)}' # round num}°C\${color}
+
+${color5}${font MesloLGS Regular:bold:12}SYSTEM ${hr 2}${font}${color}
 $sysname $kernel
 $nodename
 Uptime: ${uptime}
+#Bluetooth${if_match "${texeci 10 cat /proc/acpi/ibm/bluetooth | grep status | awk '{print $2}'}"=="enabled"}${alignr}${color3}enabled${else}${alignr}${color3}disabled${endif}${color}
 
-System  ${alignr}${color3}${fs_bar 12,150 /}  $color${fs_free /} free / ${fs_size /}$color$font
-Downloads ${alignr}${color3}${fs_bar 12,150 /mnt/Downloads}  $color${fs_free /mnt/Downloads} free / ${fs_size /mnt/Downloads}$color$font
-E ${alignr}${color3}${fs_bar 12,150 /mnt/e}  $color${fs_free /mnt/e} free / ${fs_size /mnt/e}$color$font
-F ${alignr}${color3}${fs_bar 12,150 /mnt/f}  $color${fs_free /mnt/f} free / ${fs_size /mnt/f}$color$font
-PLEX ${alignr}${color3}${fs_bar 12,150 /mnt/plex}  $color${fs_free /mnt/plex} free / ${fs_size /mnt/plex}$color$font
+System  ${alignr}${color0}${fs_bar 12,150 /}  $color${fs_free /} free / ${fs_size /}$color$font
+Downloads ${alignr}${color0}${fs_bar 12,150 /mnt/Downloads}  $color${fs_free /mnt/Downloads} free / ${fs_size /mnt/Downloads}$color$font
+PLEX1 ${alignr}${color0}${fs_bar 12,150 /mnt/plex1}  $color${fs_free /mnt/plex1} free / ${fs_size /mnt/plex1}$color$font
+PLEX2 ${alignr}${color0}${fs_bar 12,150 /mnt/plex2}  $color${fs_free /mnt/plex2} free / ${fs_size /mnt/plex2}$color$font
+#NAS ${alignr}${color0}${fs_bar 12,150 /mnt/plex}  $color${fs_free /mnt/plex} free / ${fs_size /mnt/plex}$color$font
 
 #
 ${font MesloLGS Regular:bold:12}CPU RESOURCES ${hr 2}${font}
 ${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${alignr}Speed ${freq_g}GHz
-CPU ${color0} ${cpu cpu0}%  ${color6}${cpubar cpu0 10,}${color}
-CPU 1: ${freq 0} Mhz/${execi 60 sensors | grep 'Core 0' | cut -c 17-20}°C${offset 50}${color4}CPU 2: ${freq 1} Mhz/${execi 60 sensors | grep 'Core 1' | cut -c 17-20}°C${color}
-${if_match ${cpu cpu0} < 80}${color6}${else}${color5}${endif}${cpugraph cpu0 30,180}    ${if_match ${cpu cpu1} < 80}${color6}${else}${color5}${endif}${cpugraph cpu1 30,180}${color}
-CPU 3: ${freq 2} Mhz/${execi 60 sensors | grep 'Core 2' | cut -c 17-20}°C${offset 50}${color4}CPU 4: ${freq 3} Mhz/${execi 60 sensors | grep 'Core 3' | cut -c 17-20}°C${color}
-${if_match ${cpu cpu2} < 80}${color6}${else}${color5}${endif}${cpugraph cpu2 30,180}    ${if_match ${cpu cpu3} < 80}${color6}${else}${color5}${endif}${cpugraph cpu3 30,180}${color}
-RAM:    ${color0}${mem}/${memmax}             Swap:    $swap/$swapmax
-${if_match ${memperc} < 70}${color6}${else}${color5}${endif}${membar 10,180}    ${if_match ${memperc} < 70}${color6}${else}${color5}${endif}${swapbar 10,180 }$color
+CPU ${cpu cpu0}%  ${color0}${cpubar cpu0 10,}${color}
+CPU 1: ${freq 0} Mhz/${execi 60 sensors | grep 'Core 0' | cut -c 17-20}°C${offset 50}CPU 2: ${freq 1} Mhz/${execi 60 sensors | grep 'Core 1' | cut -c 17-20}°C${color}
+${if_match ${cpu cpu0} < 80}${color0}${else}${color5}${endif}${cpugraph cpu0 30,180}    ${if_match ${cpu cpu1} < 80}${color0}${else}${color5}${endif}${cpugraph cpu1 30,180}${color}
+CPU 3: ${freq 2} Mhz/${execi 60 sensors | grep 'Core 2' | cut -c 17-20}°C${offset 50}CPU 4: ${freq 3} Mhz/${execi 60 sensors | grep 'Core 3' | cut -c 17-20}°C${color}
+${if_match ${cpu cpu2} < 80}${color0}${else}${color5}${endif}${cpugraph cpu2 30,180}    ${if_match ${cpu cpu3} < 80}${color0}${else}${color5}${endif}${cpugraph cpu3 30,180}${color}
+RAM:    ${mem}/${memmax}             Swap:    $swap/$swapmax
+${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${membar 10,180}    ${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${swapbar 10,180 }$color
 #
 #
 ${font MesloLGS Regular:bold:12}GRAPHICS ${font}${hr 2}
 
 ${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits} $color
 NVIDIA Driver: ${execi 60 nvidia-smi | grep 'Driver Version' | cut -c 14-20}
-GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq} ${image ~/.conky/Randy/nvidia_1060.jpg -p 240,495} $color
+GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq} ${image ~/.conky/Randy/nvidia_1060.jpg -p 240,595} $color
 Temp        :   ${if_match ${nvidia temp} < 65}${color3}${else}${color5}${endif}${nvidia temp} C$color
 Mem Clock   :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${color5}${endif}${nvidia memfreq}$color
 GPU Useage  :   ${color3}${execi 5 nvidia-settings -tq GPUUtilization | grep -o 'graphics=[0-9]*' | sed -e 's/graphics=//'}%
@@ -100,4 +118,8 @@ Network  : $color${wireless_essid enp4s0} ${alignr}IP:   ${addrs enp4s0}
 NordVPN   : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 Up:  ${upspeed enp4s0} / ${totalup enp4s0}              Down:  ${downspeed enp4s0} / ${totaldown enp4s0}
-${color6}${upspeedgraph enp4s0 20,180 4B1B0C FF5C2B 100 -l}   ${color6}${downspeedgraph enp4s0 20,180 324D23 77B753 100 -l}
+${color6}${upspeedgraph enp4s0 20,180 FEBB26 461D7C 10000 -l}   ${color6}${downspeedgraph enp4s0 20,180 461D7C FEBB26 10000 -l}
+# Forcast pictures
+${execi 300 cp -f ~/.conky/weather/$(jq .list[1].weather[0].id ~/.cache/forecast.json).png ~/.cache/forecast-1.png}${image ~/.cache/forecast-1.png -p 24,130 -s 80x48}\
+${execi 300 cp -f ~/.conky/weather/$(jq .list[2].weather[0].id ~/.cache/forecast.json).png ~/.cache/forecast-2.png}${image ~/.cache/forecast-2.png -p 152,130 -s 80x48}\
+${execi 300 cp -f ~/.conky/weather/$(jq .list[3].weather[0].id ~/.cache/forecast.json).png ~/.cache/forecast-3.png}${image ~/.cache/forecast-3.png -p 280,130 -s 80x48}\
