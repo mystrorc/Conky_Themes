@@ -19,8 +19,8 @@ draw_graph_borders yes
 draw_outline no
 draw_shades no
 
-#gap_x = -1910,
-gap_x 20
+gap_x 1930
+#gap_x 20
 gap_y 40
 net_avg_samples 2
 no_buffers yes
@@ -61,12 +61,14 @@ color9 76b900   # NVIDIA Green
 
 TEXT
 ${font MesloLGS Regular:pixelsize=24}${time %A}, ${time %B} ${time %d}
-   ${time %I:%M}$font
+   ${time %I:%M}
+${execi 300 /home/rcrout/weather.sh 70791}${font}
 
 ${color5}${font MesloLGS Regular:bold:12}SYSTEM ${hr 2}${font}${color}
 $sysname $kernel
 $nodename
-Uptime: ${uptime}
+Distro: ${alignr}${color}${execi 6000 lsb_release -d | grep 'Descr'|awk {'print $2 " " $3" " $4"" $5'}}
+Uptime: ${alignr}${uptime}
 
 System ${alignr}${color0}${fs_bar 12,150 /}  $color${fs_free /} free / ${fs_size /}$color$font
 Data ${alignr}${color0}${fs_bar 12,150 /mnt/data}  $color${fs_free /mnt/data} free / ${fs_size /mnt/data}$color$font
@@ -84,18 +86,13 @@ RAM:    ${mem}/${memmax}             Swap:    $swap/$swapmax
 ${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${membar 10,180}    ${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${swapbar 10,180 }$color
 
 ${font MesloLGS Regular:bold:12}GRAPHICS ${font}${hr 2}
+GPU: ${color}AMD Radeon RX 6700XT	${alignr}Fan: ${alignr}${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'fan1_input: [0-9]\{1,4\}' | cut -c 13-"}RPM 
+Temp: ${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'temp1_input: [0-9]\{1,3\}\.[0-9]' | cut -c 14-"}C 			${alignr}Power: ${alignr}${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'power1_average: [0-9]\{1,3\}\.[0-9]' | cut -c 17-"}W 
+${color0}${execgraph "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut --characters=5-" 60 07CC0D FF0000 -t}${color}
 
-#${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits} $color
-#NVIDIA Driver: ${execi 60 nvidia-smi | grep 'Driver Version' | cut -c 14-20}
-#GPU Clock   :   ${if_match ${nvidia gpufreq} < 1000}${color3}${else}${color5}${endif}${nvidia gpufreq} ${image ~/.conky/Randy/nvidia_1060.jpg -p 240,595} $color
-#Temp        :   ${if_match ${nvidia temp} < 65}${color3}${else}${color5}${endif}${nvidia temp} C$color
-#Mem Clock   :   ${if_match ${nvidia memfreq} < 800}${color3}${else}${color5}${endif}${nvidia memfreq}$color
-#GPU Useage  :   ${color3}${execi 5 nvidia-settings -tq GPUUtilization | grep -o 'graphics=[0-9]*' | sed -e 's/graphics=//'}%
-
-#${nvidiabar 10 gpuutil}$color
 ${font MesloLGS Regular:bold:12}CONNECTIONS ${hr 2}${font}
 Network  : $color${wireless_essid eno1} ${alignr}IP:   ${addrs eno1}
 NordVPN   : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 Up:  ${upspeed eno1} / ${totalup eno1}              Down:  ${downspeed eno1} / ${totaldown eno1}
-${color6}${upspeedgraph eno1 20,180 FEBB26 461D7C 10000 -l}   ${color6}${downspeedgraph eno1 20,180 461D7C FEBB26 10000 -l}
+${color6}${upspeedgraph eno1 20,180 FEBB26 461D7C}   ${color6}${downspeedgraph eno1 20,180 461D7C FEBB26}
