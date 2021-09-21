@@ -1,0 +1,101 @@
+conky.config = {
+-- **********************************************************************
+
+
+
+-- **********************************************************************
+
+	background = true,
+	double_buffer = true,
+
+	alignment = 'bottom_left',
+
+	border_width = 1,
+	cpu_avg_samples = 2,
+	default_color = '#eeba30',
+	default_outline_color = 'white',
+	default_shade_color = 'white',
+	draw_borders = false,
+	draw_graph_borders = true,
+	draw_outline = false,
+	draw_shades = false,
+
+	gap_x = 1930,
+--gap_x 20
+	gap_y = 40,
+	net_avg_samples = 2,
+	no_buffers = true,
+	out_to_console = false,
+	out_to_stderr = false,
+	extra_newline = false,
+
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_transparent = true,
+	own_window_colour = '#000000',
+	own_window_argb_visual = true,
+	own_window_argb_value = 0,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+
+	minimum_width = 300, minimum_height = 300,
+	stippled_borders = 0,
+	update_interval = 1.0,
+	uppercase = false,
+	use_spacer = 'none',
+
+	show_graph_scale = false,
+	show_graph_range = false,
+
+	use_xft = true,
+	xftalpha = 0.1,
+	font = 'MesloLGS Regular:size=9',
+	color0 = '#461D7C',-- Bars
+	color1 = '#FEBB26',-- Titles
+	color2 = '#740001',-- Gryffindor Maroon
+	color3 = '#ae0001',-- Gryffindor Red
+	color4 = '#eeba30',-- Gryffindor Yellow
+	color5 = '#d3a625',-- Gryffindor dark Yellow
+	color6 = '#000000',-- Gryffindor Black
+	color7 = '#461D7C',-- LSU Purple
+	color8 = '#FEBB26',-- LSU Gold
+	color9 = '#76b900',-- NVIDIA Green
+
+};
+
+conky.text = [[
+${font MesloLGS Regular:pixelsize=24}${time %A}, ${time %B} ${time %d}
+   ${time %I:%M}
+${execi 300 /home/rcrout/weather.sh 70791}${font}
+
+${color5}${font MesloLGS Regular:bold:12}SYSTEM ${hr 2}${font}${color}
+$sysname $kernel
+$nodename
+Distro: ${alignr}${color}${execi 6000 lsb_release -d | grep 'Descr'|awk {'print $2 " " $3" " $4"" $5'}}
+Uptime: ${alignr}${uptime}
+
+System ${alignr}${color0}${fs_bar 12,150 /}  $color${fs_free /} free / ${fs_size /}$color$font
+Data ${alignr}${color0}${fs_bar 12,150 /mnt/data}  $color${fs_free /mnt/data} free / ${fs_size /mnt/data}$color$font
+PLEX1 ${alignr}${color0}${fs_bar 12,150 /mnt/plex1}  $color${fs_free /mnt/plex1} free / ${fs_size /mnt/plex1}$color$font
+PLEX2 ${alignr}${color0}${fs_bar 12,150 /mnt/plex2}  $color${fs_free /mnt/plex2} free / ${fs_size /mnt/plex2}$color$font
+
+${font MesloLGS Regular:bold:12}CPU RESOURCES ${hr 2}${font}
+${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${alignr}Speed ${freq_g}GHz
+CPU ${cpu cpu0}%  ${color0}${cpubar cpu0 10,}${color}
+CPU 1: ${freq 0} Mhz/${execi 60 sensors | grep 'Core 0' | cut -c 17-20}°C${offset 50}CPU 2: ${freq 1} Mhz/${execi 60 sensors | grep 'Core 1' | cut -c 17-20}°C${color}
+${if_match ${cpu cpu0} < 80}${color0}${else}${color5}${endif}${cpugraph cpu0 20,180}    ${if_match ${cpu cpu1} < 80}${color0}${else}${color5}${endif}${cpugraph cpu1 20,180}${color}
+CPU 3: ${freq 2} Mhz/${execi 60 sensors | grep 'Core 2' | cut -c 17-20}°C${offset 50}CPU 4: ${freq 3} Mhz/${execi 60 sensors | grep 'Core 3' | cut -c 17-20}°C${color}
+${if_match ${cpu cpu2} < 80}${color0}${else}${color5}${endif}${cpugraph cpu2 20,180}    ${if_match ${cpu cpu3} < 80}${color0}${else}${color5}${endif}${cpugraph cpu3 20,180}${color}
+RAM:    ${mem}/${memmax}             Swap:    $swap/$swapmax
+${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${membar 10,180}    ${if_match ${memperc} < 70}${color0}${else}${color5}${endif}${swapbar 10,180 }$color
+
+${font MesloLGS Regular:bold:12}GRAPHICS ${font}${hr 2}
+GPU: ${color}AMD Radeon RX 6700XT	${alignr}Fan: ${alignr}${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'fan1_input: [0-9]\{1,4\}' | cut -c 13-"}RPM 
+Temp: ${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'temp1_input: [0-9]\{1,3\}\.[0-9]' | cut -c 14-"}C 			${alignr}Power: ${alignr}${color}${exec "sensors -u amdgpu-pci-0300 | grep -o 'power1_average: [0-9]\{1,3\}\.[0-9]' | cut -c 17-"}W 
+${color0}${execgraph "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut --characters=5-" 60 461D7C FEBB26 -t}${color}
+
+${font MesloLGS Regular:bold:12}CONNECTIONS ${hr 2}${font}
+Network  : $color${wireless_essid eno1} ${alignr}IP:   ${addrs eno1}
+NordVPN   : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
+WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
+Up:  ${upspeed eno1} / ${totalup eno1}              Down:  ${downspeed eno1} / ${totaldown eno1}
+${color6}${upspeedgraph eno1 20,180 FEBB26 461D7C}   ${color6}${downspeedgraph eno1 20,180 461D7C FEBB26}]];
