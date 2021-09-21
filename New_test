@@ -1,0 +1,232 @@
+conky.config = {
+
+    -- conky setup
+    
+    update_interval = 1,
+    update_interval_on_battery = 3,
+    background = true,
+    total_run_times = 0,
+    cpu_avg_samples = 2,
+    no_buffers = true,
+    text_buffer_size = 4096,
+    temperature_unit = 'celsius',
+    override_utf8_locale = true,
+    top_name_width = 20,
+    
+    -- set up window
+    
+    alignment = 'top_right',
+    gap_x = 20,
+    gap_y = 105,
+    maximum_width = 230,
+    double_buffer = true,
+    background = true,
+    own_window = true,
+    own_window_transparent = true,
+    own_window_type = 'normal',
+    own_window_class = 'conky',
+    own_window_argb_visual = true,
+    own_window_hints = 'undecorated, below, sticky, skip_taskbar, skip_pager',
+    draw_borders = false,
+    draw_shades = false,
+    draw_outline = false,
+    use_xft = true,
+    font = 'Arial:size=11',
+    uppercase = false,
+    short_units = true,
+    default_bar_height = 22,
+    default_bar_width = 46,
+    
+    -- colors and icons
+    
+    color0 = '7c818c', -- bar/graph color
+    color1 = 'd3dae3', -- text color
+    color6 = '5dade2', -- blue
+    color7 = '58d68d', -- green
+    color8 = 'cfcb00', -- yellow
+    color9 = 'ec7063', -- red
+    
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\		-- clock
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\		-- padlock locked
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\		-- speaker full volume
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    -- ${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    
+    }
+    
+    -- text 
+        conky.text = [[
+    #
+    # Header
+    #
+    ${color1}${font Arial:size=24}${alignc}Jupiter${font}
+    #
+    # cpu temperature / fan status.  Colors change to yellow at 75°C and red at 90°C.
+    #
+    ${font}
+    ${voffset 10}${color7}${if_match ${hwmon 3 temp 1} > 75}${color8}${endif}\
+    ${if_match ${hwmon 3 temp 1} > 90}${color9}${endif}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${color1} temp:\
+    ${alignr}${color7}${if_match ${hwmon 3 temp 1} > 75}${color8}\
+    ${endif}${if_match ${hwmon 3 temp 1} > 90}${color9}${endif}${hwmon 3 temp 1}${color1}°C
+    #
+    # fan info
+    #
+    #${voffset 8}${color7}${if_match "${i8k_right_fan_rpm}" > "2000"}${color8}${endif}\
+    #${if_match "${i8k_right_fan_rpm}" > "4000"}${color9}${endif}\
+    #${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}\
+    #${color1} cpu: ${color7}${if_match "${i8k_right_fan_rpm}" > "2000"}${color8}${endif}\
+    #${if_match "${i8k_left_fan_rpm}" > "4000"}${color9}${endif}${i8k_left_fan_rpm}${color1} rpm \
+    #${alignr}gpu: ${color7}${if_match "${i8k_left_fan_rpm}" > "2000"}${color8}${endif}\
+    #${if_match "${i8k_left_fan_rpm}" > "4000"}${color9}${endif}${i8k_left_fan_rpm}${color1} rpm \
+    #${color7}${if_match "${i8k_left_fan_rpm}" > "2000"}${color8}${endif}\
+    #${if_match "${i8k_left_fan_rpm}" > "4000"}${color9}${endif}\
+    #${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}
+    #
+    # cpu load
+    #
+    ${voffset 8}${color7}${if_match ${cpu cpu0} >= 25}${color8}${endif}\
+    ${if_match ${cpu cpu0} >= 75}${color9}${endif}\
+    ${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${color1} cpu load:\
+    ${alignr}${color7}${if_match ${cpu cpu0} >= 25}${color8}${endif}\
+    ${if_match ${cpu cpu0} >= 75}${color9}${endif}${cpu cpu0}${color1}%
+    #
+    # 1m, 5m and 15m cpu load.  Note color changes as load increases.
+    #
+    ${voffset 8}${font Arial:size=10}${if_match ${loadavg 1} <= 25}${color7}${endif}\
+    ${if_match ${loadavg 1} > 25}${color8}${endif}${if_match ${loadavg 1} > 75}${color9}${endif}\
+    ${font Font Awesome 5 Free:style=Solid:pixelsize=16} ${font}\
+    ${color1}${font Arial:size=10}1m: ${if_match ${loadavg 1} <= 25}${color7}${endif}\
+    ${if_match ${loadavg 1} > 25}${color8}${endif}${if_match ${loadavg 1} > 75}${color9}${endif}${loadavg 1}\
+    ${color1} 5m: ${if_match ${loadavg 2} <=25}${color7}${endif}\
+    ${if_match ${loadavg 2} > 25}${color8}${endif}${if_match ${loadavg 2} > 75}${color9}${endif}\
+    ${loadavg 2}${color1} 15m: ${if_match ${loadavg 3} <=25}${color7}${endif}\
+    ${if_match ${loadavg 3} > 25}${color8}${endif}${if_match ${loadavg 3} > 75}${color9}${endif}\
+    ${loadavg 3}${font}
+    # 
+    # big tachometer icon
+    # 
+    ${voffset 8}${alignc}${color7}${if_match ${cpu cpu0} >= 25}${color8}${endif}${if_match ${cpu cpu0} >= 75}${color9}${endif}\
+    ${font Font Awesome 5 Free:style=Solid:pixelsize=24}${font}
+    #
+    # core frequencies
+    #
+    # cpu 1 - 2
+    #
+    ${voffset 6}${color1}cpu 1: ${color7}\
+    ${if_match ${freq 1} < 2500}${color8}${endif}\
+    ${if_match ${freq 1} < 1500}${color9}${endif}${freq 1}${color1} mhz\
+    ${alignr}${color1}cpu 2: ${color7}\
+    ${if_match ${freq 2} < 2500}${color8}${endif}\
+    ${if_match ${freq 2} < 1500}${color9}${endif}${freq 2}${color2} mhz
+    #
+    # cpu 3 - 4
+    #
+    ${voffset 6}${color1}cpu 3: ${color7}\
+    ${if_match ${freq 3} < 2500}${color8}${endif}\
+    ${if_match ${freq 3} < 1500}${color9}${endif}${freq 3}${color1} mhz\
+    ${alignr}${color1}cpu 4: ${color7}\
+    ${if_match ${freq 4} < 2500}${color8}${endif}\
+    ${if_match ${freq 4} < 1500}${color9}${endif}${freq 4}${color1} mhz
+    #
+    # 
+    # big chip icon
+    # 
+    ${voffset 12}${alignc}${color8}${font Font Awesome 5 Free:style=Solid:pixelsize=24}${font}
+    #
+    # memory bar.  Note conditional at the end of the line.
+    #
+    ${voffset 8}${color1}ram used: ${exec free -m | grep -i mem |  awk '{print $3}'} M ${alignr}free: ${memeasyfree}
+    ${color0}${membar 7,230}
+    ${color1}${font Arial:size=9}  buffers:${offset 12}${buffers}${offset 48}cached: ${alignr}${cached}  ${font}
+    #
+    # swapbar
+    #
+    ${voffset 12}${color1}swap used: ${swap}${alignr}free: ${swapfree}
+    ${color0}${swapbar 7,230}
+    #
+    # simple filesystem bar.  This one is for /
+    #
+    # 
+    # floppy disk icon
+    # 
+    ${voffset 8}${alignc}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=24}${font}
+    #
+    ${voffset 12}${color1}ssd used: ${fs_used /} ${alignr}free:${fs_free /} 
+    ${color0}${fs_bar 7,230 /}
+    #
+    # filesystem bar for /media/internal
+    #
+    #${voffset 12}${color1}2tb used: ${fs_used /media/internal} ${alignr}free: ${fs_free /media/internal} 
+    #${color0}${fs_bar 7,230 /}
+    #
+    # disk i/o numbers
+    #
+    #${voffset 0}${color1}${font Arial:size=9}  disk write:  ${diskio_write}${alignr}disk read:  ${diskio_read}  ${font}
+    #
+    # network information
+    #
+    # 
+    # wlan icon
+    # 
+    ${voffset 0}${alignc}${color7}${font Font Awesome 5 Free:style=Solid:pixelsize=24}${font}
+    #
+    ${color1}${if_existing /proc/net/route wlan0}
+    ${voffset -10}signal: ${wireless_link_qual_perc wlan0}%${alignr}${wireless_bitrate wlan0}
+    ${color0}${wireless_link_bar 7,230 wlan0}
+    ${color1}${font Arial:size=9}${color7}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${color1} ${downspeedf wlan0} kbps
+    ${voffset -12}${color1}${alignr}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${voffset -4}${color1} ${upspeedf wlan0} kbps  ${font}${endif}
+    #${color1}${if_existing /proc/net/route wlp3s0}
+    #${voffset -30}signal: ${wireless_link_qual_perc wlp3s0}%${alignr}${wireless_bitrate wlp3s0}
+    #${color0}${wireless_link_bar 7,230 wlp3s0}
+    #${color1}${font Arial:size=9}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${downspeedf wlp3s0} kbps
+    #${voffset -12}${color1}${alignr}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${color1} ${upspeedf wlp3s0} kbps  ${font}${endif}\
+    #${color1}${if_existing /proc/net/route eno1}
+    #${voffset -34}${color1}network:
+    #${color0}${voffset 8}${downspeedgraph eno1 14,200 -t -l}
+    #${voffset 8}${color1}${font Arial:size=9}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${downspeedf eno1} kbps
+    #${alignr}${voffset -12}${color6}${font Font Awesome 5 Free:style=Solid:pixelsize=16}${font}${color1} ${upspeedf eno1}${color1} kbps  ${font}
+    #${endif}
+    #
+    #   
+    ${exec ~/.conky/conky-spotify/scripts/cover.sh}
+    ${image ~/.conky/conky-spotify/current/current.jpg -p 19,480 -s 100x100}
+    ${voffset -55}
+    ${font Arial:size=9}
+    ${offset 114}${color4}Title:${color}
+    ${offset 120}${color1}${exec ~/.conky/conky-spotify/scripts/title.sh}
+    ${offset 114}${color4}Artist:${color}
+    ${offset 120}${color1}${exec ~/.conky/conky-spotify/scripts/artist.sh}
+    ${offset 114}${color4}Album:${color}
+    ${offset 120}${color1}${exec ~/.conky/conky-spotify/scripts/album.sh}
+
+    ]]
