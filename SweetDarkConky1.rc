@@ -1,0 +1,131 @@
+conky.config = {
+    alignment = 'top_left',
+    background = false,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_argb_visual = true,
+    own_window_argb_value = 50,
+    own_window_transparent = true,
+    own_window_type = 'normal',
+    own_window_hints = 'undecorated,below,skip_taskbar,sticky,skip_pager',
+    own_window_colour = '000000',
+    draw_borders = no,
+    gap_x = 10,
+    gap_y = 10,
+    minimum_height = 10,
+    minimum_width = 400,
+
+    use_xft = true,
+    xftalpha = 0.8,
+    font = 'FantasqueSansMono:normal:size=11',
+    text_buffer_size = 2048,
+    uppercase = no,
+    override_utf8_locale = yes,
+    default_color = 'ffffff',
+    color1 = '0066ff',
+    color2 = '2742a9',
+    color3 = 'f9e30f',
+    color4 = 'eac784',
+    color5 = '161925',
+    color6 = '17665a',
+
+    update_interval = 1.0,
+    total_run_times = 0,
+    draw_shades = no,
+    default_shade_color = '000000',
+    draw_outline = no,
+    default_outline_color = '000000',
+    draw_graph_borders = true,
+    show_graph_scale = no,
+    show_graph_range = no,
+    short_units = yes,
+
+    use_spacer = none,
+    double_buffer = true,
+    no_buffers = true,
+    imlib_cache_size = 0,
+    cpu_avg_samples = 2,
+    hddtemp_host = "127.0.0.1",
+    hddtemp_port = "7634",
+}
+
+conky.text = [[
+
+#--------------------------------------------------------------------------------------------------------------------------------
+#                                                   System
+#--------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}a${font} System» $hr ${color}
+${goto 10}OS:${color2}${alignr 10}${execi 86400 cat `ls -ar /etc/os-release | tail -2` | grep "PRETTY_NAME" | cut -d= -f2 |  sed 's/"//g'}${color}
+#${goto 10}Codename:${color2}${alignr 10}${execi 65000 lsb_release -cs | awk '{print $1}'}${color}
+${goto 10}DE:${color2}${alignr 10}${exec gnome-shell --version}${color}
+${goto 10}${color}Kernel:${color2}${alignr 10}${kernel}${color}
+${goto 10}Uptime:${color6}${alignr 10}$uptime${color}
+
+#--------------------------------------------------------------------------------------------------------------------------------
+#                                                   CPU
+#-------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}f${font} CPU» $hr${color}
+${goto 10}CPU:${color2}${alignr 10}${exec cat /proc/cpuinfo|grep 'model name'|sed -e 's/model name.*: //'| uniq | cut -c 1-18}${color}
+#${goto 10}Active Governor: ${color2}${alignr 10}${execi 1 cut -b 1-20 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor}${color}
+#${goto 10}Clock Rate:${color6}${alignr 10}${freq_g 1}GHz${color}
+${goto 10}CPU Temp:${color6}${alignr 10}${exec sensors | grep 'CPUTIN' | awk 'NR==1{print $2}'}
+${cpugraph}
+#-------------------------------------------------------------------------------------------------------------------------------
+#                                                   Cores
+#-------------------------------------------------------------------------------------------------------------------------------
+${color}${goto 10}Core 1: ${color6}${freq_g 1}GHz ${alignr 10}${cpu cpu0}% ${color1}${cpubar cpu0 8,80}
+${color}${goto 10}Core 2: ${color6}${freq_g 2}GHz ${alignr 10}${cpu cpu1}% ${color1}${cpubar cpu1 8,80}
+${color}${goto 10}Core 3: ${color6}${freq_g 3}GHz ${alignr 10}${cpu cpu2}% ${color1}${cpubar cpu2 8,80}
+${color}${goto 10}Core 4: ${color6}${freq_g 4}GHz ${alignr 10}${cpu cpu3}% ${color1}${cpubar cpu3 8,80}
+${color}${goto 10}Core 5: ${color6}${freq_g 5}GHz ${alignr 10}${cpu cpu4}% ${color1}${cpubar cpu4 8,80}
+${color}${goto 10}Core 6: ${color6}${freq_g 6}GHz ${alignr 10}${cpu cpu5}% ${color1}${cpubar cpu5 8,80}
+${color}${goto 10}Core 7: ${color6}${freq_g 7}GHz ${alignr 10}${cpu cpu6}% ${color1}${cpubar cpu6 8,80}
+${color}${goto 10}Core 8: ${color6}${freq_g 8}GHz ${alignr 10}${cpu cpu7}% ${color1}${cpubar cpu7 8,80}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+#                                                   Memory
+#-------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}J${font} Memory» $hr${color}
+${goto 10}RAM:  ${color6}$mem${color}/${color2}$memmax ${color6}${alignr 10}$memperc% ${color1}${membar 8,80}${color}
+${goto 10}SWAP: ${color6}$swap${color}/${color2}$swapmax ${color6}${alignr 10}$swapperc% ${color1}${swapbar 8,80}${color}
+#${goto 10}MEM Temp:${color6}${alignr 10}${exec sensors | grep 'SODIMM' | awk 'NR==1{print $2}'}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+#                                                   GPU
+#-------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}f${font} GPU» $hr${color}
+${goto 10}Graphics cards:${color2}${alignr 10}${execi 600 hwinfo --gfxcard | grep "Model" | cut -c 24-45}${color}
+#${goto 10}GPU Temp:${color6}${alignr 10}${exec sensors | grep 'edge' | awk 'NR==1{print $2}'}${color}
+${goto 10} edge:${if_match "${exec sensors | grep "edge" |cut -c16-17}" <="70"}$color3 ${else} $color4 ${if_match "${exec sensors|grep "edge" |cut -c16-17}" >="99"}$color2 ${endif} ${endif} ${exec sensors|grep "edge"|cut -c16-22} $color1
+${goto 10}Driver: ${color6}${alignr 10}${execi 6000 glxinfo | grep "OpenGL version" |cut -c52-70}${color}
+${goto 20}Utilization: ${color6}${alignr 10}${execi 2 cat /sys/class/drm/card0/device/gpu_busy_percent} % ${color}
+${goto 10}free VRAM: ${color6}${alignr 10}${exec glxinfo | grep 'dedicated'| cut -c48-60} of ${exec glxinfo | grep 'Dedicated'| cut -c29-60}${color}
+#Fan Control: ${execi 2 sensors | grep "fan1" | grep "max"}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+#                                                   Storage
+#-------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}k${font} Storage» $hr${color}
+${goto 10}SSD:   ${color6}${fs_used /}${color}/${color2}${fs_size /} ${color6}${alignr 10}${fs_used_perc /}% ${color1}${fs_bar 8,80 /}${color}
+${goto 10}Data:  ${color6}${fs_used /mnt/data}${color}/${color2}${fs_size /mnt/data} ${color6}${alignr 10}${fs_used_perc /mnt/data}% ${color1}${fs_bar 8,80 /mnt/data}${color}
+${goto 10}Plex1: ${color6}${fs_used /mnt/plex1}${color}/${color2}${fs_size /mnt/plex1} ${color6}${alignr 10}${fs_used_perc /mnt/plex1}% ${color1}${fs_bar 8,80 /mnt/plex1}${color}
+${goto 10}Plex2: ${color6}${fs_used /mnt/plex2}${color}/${color2}${fs_size /mnt/plex2} ${color6}${alignr 10}${fs_used_perc /mnt/plex2}% ${color1}${fs_bar 8,80 /mnt/plex2}${color}
+
+#--------------------------------------------------------------------------------------------------------------------------------
+#                                                   Network
+#-------------------------------------------------------------------------------------------------------------------------------
+${color4}${font ConkySymbols:size=12}b${font} Network» $hr${color}
+${goto 10}Host:${color2}${alignr 10}${exec hostname}${color}
+#${goto 10}Network SSID: ${color2}${alignr 10}${wireless_essid wlp41s0}${color}
+#${goto 10}Signal:${alignr 10}${color6}${wireless_link_qual_perc wlp41s0} %${color}
+#${color4}${goto 10}${stippled_hr}${color}
+${goto 10}Internal IP: ${color2}${alignr 10}${addr enp39s0}${color}
+#${goto 10}External IP: ${color2}${alignr 10}${exec curl ipinfo.io/ip}${color}
+${color4}${goto 10}${stippled_hr}${color}
+${goto 10}Upload Speed:${alignr 10}${color6}${upspeed enp39s0}${color} ${color5}${upspeedgraph enp39s0 10,100 fc8c3b c6396b -t}${color}
+${goto 10}Down Speed:${alignr 10}${color6}${downspeed enp39s0}${color} ${color5}${downspeedgraph enp39s0 10,100 fc8c3b c6396b -t}${color}
+${goto 10}Total Up: ${color2}${totalup enp39s0} ${color}${alignr 10}Total Down: ${color2}${totaldown enp39s0}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+
+]];
