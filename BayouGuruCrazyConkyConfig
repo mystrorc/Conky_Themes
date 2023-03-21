@@ -1,0 +1,108 @@
+--
+--  BayouGuru's Crazy Conky Config!
+--  version:  2023-3-18.2145
+--
+conky.config = {
+update_interval = 1,
+total_run_times = 0,
+alignment = "top_left",
+gap_x = 3,
+gap_y = 3,
+minimum_width = 260,
+maximum_width = 260,
+maximum_height = 875,
+-- minimum_height = 750,
+net_avg_samples = 1,
+cpu_avg_samples = 1,
+own_window = true,
+own_window_type = "normal",
+own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+own_window_transparent = false,
+own_window_argb_visual = true,
+own_window_argb_value = 210,
+own_window_colour = "080721",
+double_buffer = true,
+use_xft = true,
+font = "Arial:size=11",
+short_units = true,
+draw_graph_borders = true,
+temperature_unit = "fahrenheit",
+draw_shades = true,
+default_outline_color = "black",
+default_bar_size = 7,
+color0 = '080721',--Dark Blue - Background
+color1 = 'lightblue',--Light Blue - Base Text
+color2 = 'gold',--Gold - Monitored Item (Frequently Updates)
+color3 = 'orange',--Orange - Monitored Item (Infrequently Updates/Versions)
+color4 = 'green',--Green - Headers
+color5 = '0064ff',--Blue - ANSI Header Art
+color6 = 'wheat',--Wheat - Bar Fill
+color7 = 'purple',--Purple - Drive Labels
+color8 = 'grey',--Grey - ANSI Forks
+color9 = 'FFFFFF',--White - Unused (So far)
+}
+conky.text = [[
+${color5}${font Arial:size-12}${alignc}┌──────═╣${color4}${font FreeSans:bold:size 12}  CPU  ${font Arial:size 12}${color5}╠═──────┐
+${voffset 4}${alignc}${color3}${font Arial:bold:size-11}${execi 6000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | sed -e 's/Processor//'  | sed -e 's/(tm)/™/' | sed -e 's/(R)//' | sed -e 's/CPU//' | sed -e 's/@/:/' | sed -e 's/\ \ //' | sed -e 's/[0-9].[0-9][0-9]GHz//' | uniq}${font}
+${voffset 4}${color1}${font Arial:size=11}Core 1${color2}${font Arial:bold:size=11}${alignc}${cpu cpu1}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 1} ${font}${color1}Mhz
+${color6}${cpubar cpu1 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Core 2${color2}${font Arial:bold:size=11}${alignc}${cpu cpu2}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 2} ${font}${color1}Mhz
+${color6}${cpubar cpu2 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Core 3${color2}${font Arial:bold:size=11}${alignc}${cpu cpu3}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 3} ${font}${color1}Mhz
+${color6}${cpubar cpu3 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Core 4${color2}${font Arial:bold:size=11}${alignc}${cpu cpu4}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 4} ${font}${color1}Mhz
+${color6}${cpubar cpu4 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Core 5${color2}${font Arial:bold:size=11}${alignc}${cpu cpu5}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 5} ${font}${color1}Mhz
+${color6}${cpubar cpu5 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Core 6${color2}${font Arial:bold:size=11}${alignc}${cpu cpu6}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 6} ${font}${color1}Mhz
+${color6}${cpubar cpu6 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color1}${font Arial:size=11}Average (All Cores):   ${color2}${font Arial:bold:size=11}${alignc}${cpu cpu0}${font} ${color1}%${alignr}${color2}${font Arial:bold:size=11}${freq 0} ${font}${color1}Mhz
+${color6}${cpubar cpu0 7,260}
+${voffset -18}${color0}${execbar 7,260}
+${color5}${font Arial:size-12}${alignc}┌─────═╣${color4}${font FreeSans:bold:size 12}  SYSTEM  ${font Arial:size 12}${color5}╠═─────┐${font}
+${color1}Temperatures ${color8}┬${color1} CPU Core:${color2}${alignr 3}${font Arial:bold:size=11}${hwmon 2 temp 1}${font}${color1}° F
+${color8}${goto 99}${voffset -1}${color8}├${color1}${voffset 0} CPU Socket:${alignr 3}${color2}${font Arial:bold:size=11}${hwmon 1 temp 1}${font}${color1}° F
+${color8}${goto 99}${voffset -1}${color8}└${color1}${voffset 0} Mainboard:${alignr 3}${color2}${font Arial:bold:size=11}${hwmon 1 temp 2}${font}${color1}° F
+${color1}Fan Speeds ${goto 98}${color8}┬${color1} CPU:${color2}${alignr}${font Arial:bold:size=11}${hwmon 1 fan 1}${font} ${color1}rpm
+${color8}${goto 98}${voffset -1}└${color1}${voffset 0} Case:${color2}${alignr}${font Arial:bold:size=11}${hwmon 1 fan 3}${font} ${color1}rpm
+${color1}System Uptime:${color2}${alignr 3}${font Arial:bold:size=11}${uptime}${font}
+${color1}USB Devices:${goto 105}${color2}${font Arial:bold:size=11}${execpi 5 lsusb | grep -iv 'hub' | cut --fields=7- --delimiter=' ' | wc -l}${font}${goto 150}${color1}Updates:${color2}${font Arial:bold:size=11}${goto 253}${execi 3600 aptitude search "~U" | wc -l | tail}${font}${color}
+${color1}Processes:  ${color2}${font Arial:bold:size=11}$processes${font}${goto 150}${color1}Running:${alignr 3}${color2}${font Arial:bold:size=11}$running_processes${font}
+${color1}Version ${color8}┬${color1} OS:${alignr 3}${font Arial:bold:size=11}${color3}Kubuntu 22.04.2 LTS${font}
+${color8}${goto 58}${voffset -1}├${color1}${voffset 0} Plasma:${alignr 3}${font Arial:bold:size=11}${color3}${execi 86400 plasmashell --version | sed 's/\plasmashell //g'}${font}
+${color8}${goto 58}${voffset -1}└${color1}${voffset 0} Kernel:${alignr 3}${font Arial:bold:size=11}${color3}${execi 86400 uname -r | sed -e 's/-generic//'}${font}
+${voffset 4}${color5}${font Arial:size-12}${alignc}┌──═╣${font FreeSans:bold:size 12}${color4} AMD RX580 GPU ${font Arial:size-12}${color5}╠═──┐${font}
+${voffset 4}${color1}VRAM:${font Arial:bold:size=11}${color2}${goto 110}${execi 3 glxinfo | grep 'dedicated'| cut -c48-60}${font}${color1}  of  ${font Arial:bold:size=11}${color2}${execi 86400 glxinfo | grep 'Dedicated'| cut -c29-60}${font}
+${color1}${font Arial:size=11}Fan Speed: ${color2}${font Arial:bold:size=11}${goto 115}${hwmon 0 fan 1}${font} ${color1}rpm${alignr}${color2}${font Arial:bold:size=11}${hwmon 0 fan 1 0.027027027027 0} ${font}${color1}%
+${color1}Temperature:${color2}${alignr}${font Arial:bold:size=11}${hwmon 0 temp 1}${font}${color1}° F
+${color1}Version  ${color8}┬${color1}  X.org:${alignr 3}${font Arial:bold:size=11}${color3}${execpi 86400 ~/.conky/scripts/conkygraphics.sh}${font}
+${color1}${goto 62}${voffset -1}${color8}└${color1}${voffset 0}  Driver:${alignr 3}${font Arial:bold:size=11}${color3}${execi 86400 glxinfo | grep "OpenGL version" |cut -c52-70}${font}
+${voffset 4}${color5}${font Arial:size-11}${alignc}┌────═╣${font FreeSans:bold:size-12}${color4} ${memmax} RAM ${font Arial:size-12}${color5}╠═────┐${font}
+${voffset 4}${color1}${font Arial:size=11}Used ${color8}┬${color1}${alignr}${color6}${membar 7,200}
+${voffset -18}${alignr}${color0}${execbar 7,200}
+${voffset -1}${color8}${font Arial:size=11}${goto 43}└${color2}${goto 60}${font Arial:bold:size=11}${mem}${font} ${color1}/ ${color2}${font Arial:bold:size=11}${memperc}%${goto 170}${font Arial:size=11}${color1}Free:${color2}${font Arial:bold:size=11}${alignr}${memeasyfree}${font}
+${voffset 4}${color5}${font Arial:size-12}${alignc}┌────═╣${font FreeSans:bold:size-12}${color4} NETWORK ${font Arial:size-12}${color5}╠═────┐${font}
+${voffset 4}${font Arial:bold:size=11}${color1}▲${color2}${goto 75}${font Arial:bold:size=11}${upspeed enp6s0}${font}${goto 150}${font Arial:bold:size=11}${color1}▼${color2}${alignr 3}${font Arial:bold:size=11}${downspeed enp6s0}${font}
+${color1}IP Address  ${color8}┬${color1}  WAN:${color3}${alignr 3}${font Arial:bold:size=11}${execi 86400 dig +short myip.opendns.com @resolver1.opendns.com}${font}
+${color8}${goto 84}${voffset -1}└${color1}${voffset 0}  LAN:${color3}${alignr 3}${font Arial:bold:size=11}${addrs enp6s0}${font}
+${voffset 4}${color5}${font Arial:size-12}${alignc}┌────═╣${font FreeSans:bold:size-12}${color4} STORAGE ${font Arial:size-12}${color5}╠═────┐${font}
+${voffset 4}${font Arial size=11}${color7}/dev/sda5${goto 160}${color1}Size:${color2}${alignr}${font Arial:bold:size-11}${fs_size /}${font}
+${color1}Type:${color2}${font Arial:bold:size-11}${goto 60}${fs_type /}${color}${font}${goto 160}${color1}Free:${color2}${alignr 3}${font Arial:bold:size-11}${fs_free /}${font}${color}
+${color1}Used:${font Arial:bold:size-11}${color2}${goto 60}${fs_used /}${color6}${alignr}${fs_bar 7,135 /}${font}
+${voffset -18}${alignr}${color0}${execbar 7,135}${color}
+${voffset 4}${font Arial size=11}${color7}/dev/sdb1${goto 160}${color1}Size:${color2}${font Arial:bold:size-11}${alignr}${fs_size /home/bayouguru/WD-500GB}
+${font}${color1}Type:${color2}${goto 60}${font Arial:bold:size-11}${fs_type /home/bayouguru/WD-500GB/}${font}${goto 160}${color1}Free:${color2}${alignr 3}${font Arial:bold:size-11}${fs_free /home/bayouguru/WD-500GB}${font}
+${color1}Used:${color2}${font Arial:bold:size-11}${goto 60}${fs_used /home/bayouguru/WD-500GB}${font}${color6}${goto 129}${fs_bar 7,135 /home/bayouguru/WD-500GB}${color}
+${voffset -18}${alignr}${color0}${execbar 7,135}${color}
+${voffset 4}${color5}${font Arial:size-12}${alignc}┌──────═╣${font FreeSans:bold:size-12}${color4} SWAP ${font Arial:size-12}${color5}╠═──────┐${font}
+${voffset 4}${color1}Used ${color8}┬${alignr}${color6}${swapbar 7,200}
+${voffset -18}${alignr}${color0}${execbar 7,200}${color}
+${voffset -1}${color8}${font Arial:size=11}${goto 43}└${voffset 0}${color2}${goto 60}${font Arial:bold:size=11}${swap}${font}${color1} / ${color2}${font Arial:bold:size=11}${swapperc}${color1} %${goto 170}${font Arial:size=11}Free:${color2}${alignr 0}${font Arial:bold:size=11}${swapfree}${font}${color}
+${voffset -264}
+]];
