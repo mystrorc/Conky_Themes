@@ -96,3 +96,44 @@ NordVPN   : $color${if_empty ${exec cat /proc/net/route | grep nordlynx}}${color
 WorkVPN  : $color${if_empty ${exec cat /proc/net/route | grep vpn0}}${color5}Disconnected${else}${color3}Connected${endif}$color ${alignr}Ext IP: ${exec curl ipinfo.io/ip}
 Up:  ${upspeed eno1} / ${totalup eno1}              Down:  ${downspeed eno1} / ${totaldown eno1}
 ${color6}${upspeedgraph eno1 20,180 FEBB26 461D7C}   ${color6}${downspeedgraph eno1 20,180 461D7C FEBB26}
+
+########################################
+#added
+########################################
+
+${color1}${font Sans:normal:size=9}NETWORK ${hr 2}$color$font
+State:${alignr} ${if_existing /sys/class/net/wlp3s0/operstate up}${color FFFFFF}ONLINE${else}${color red}OFFLINE${endif}$color
+ISP: ${alignr} ${execi 6000 curl ipinfo.io/org}
+Locale: ${alignr} ${execi 6000 curl ipinfo.io/city}, ${execi 6000 curl ipinfo.io/region}, ${execi 6000 curl ipinfo.io/country}
+#${alignr} ${execi 6000 curl ipinfo.io/loc}
+Local IP: ${alignr} ${addr wlp3s0}
+Public IP: ${alignr} ${execi 600 wget http://ipinfo.io/ip -qO -}
+#Total connections: ${alignr}${tcp_portmon 1 65535 count}
+Ping to 192.168.1.1: $alignr ${texeci 15 output=$(ping -c 10 192.168.1.1); avg=$(printf "%0.1f" `echo $output | awk -F '/' 'END {print $5}'` | sed 's/,/./'); mdev=$(printf "%0.1f" `echo $output | awk -F '/' 'END {print $7}' | sed 's/ .*//'` | sed 's/,/./'); echo $avg ± $mdev ms}
+Ping to 8.8.8.8: $alignr ${texeci 15 output=$(ping -c 10 8.8.8.8); avg=$(printf "%0.1f" `echo $output | awk -F '/' 'END {print $5}'` | sed 's/,/./'); mdev=$(printf "%0.1f" `echo $output | awk -F '/' 'END {print $7}' | sed 's/ .*//'` | sed 's/,/./'); echo $avg ± $mdev ms}
+
+Down: ${downspeed wlp3s0} / s ${alignr} Up: ${upspeed wlp3s0} / s
+${downspeedgraph wlp3s0 25,200 ffffff ffffff} ${alignr}${upspeedgraph wlp3s0 25,200 ffffff ffffff}
+Total: ${totaldown wlp3s0} ${alignr}Total: ${totalup wlp3s0}
+#Inbound: ${tcp_portmon 1 32767 count} Outbound: ${tcp_portmon 32768 61000 count}${alignr}
+
+#
+### WEATHER
+#
+${color1}${stippled_hr}${color}
+${font2}${color1}WEATHER${font}
+${color3}${texeci 900 curl -s wttr.in/Tallinn?format=%l:+%C+%t+%w+%p}${color}
+${texeci 900 curl -s wttr.in/Moscow?format=%l:+%C+%t+%w+%p}
+${texeci 900 curl -s wttr.in/London?format=%l:+%C+%t+%w+%p}
+
+
+#
+### GPU
+#
+${color1}$stippled_hr$color
+${font2}${color1}GPU ${color} ${alignr} Radeon 6900 XT @ ${color3}${exec grep -Po '\d+:\s\K(\d+)(?=.*\*$)' /sys/class/drm/card0/device/pp_dpm_sclk} GHz$color${font}
+
+Usage:  ${color3}${exec cat /sys/class/drm/card0/device/gpu_busy_percent}%${color}${alignr}${color}Driver: ${color3}Mesa ${execi 60 glxinfo | grep Version | cut -c 14-23}${color}
+Temp Edge: ${color3}${execi 5 sensors | grep edge | cut -c 16-23}${alignr -5}${color}Temp Junction: ${color3}${execi 5 sensors | grep junction | cut -c 16-23}${color}
+${color black}${execgraph "cat /sys/class/drm/card0/device/gpu_busy_percent" 24,320 000000 FFA500}
+
