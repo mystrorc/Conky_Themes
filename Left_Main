@@ -1,0 +1,66 @@
+conky.config = {
+update_interval = 1,
+total_run_times = 0,
+alignment = "top_left",
+gap_x = 3,
+gap_y = 3,
+minimum_width = 400,
+maximum_width = 400,
+-- minimum_height = 750,
+net_avg_samples = 1,
+cpu_avg_samples = 1,
+own_window = true,
+own_window_type = "normal",
+own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+own_window_transparent = false,
+own_window_argb_visual = true,
+own_window_argb_value = 210,
+own_window_colour = "080721",
+double_buffer = true,
+use_xft = true,
+font = "MesloLGS:size=16",
+short_units = true,
+draw_graph_borders = true,
+temperature_unit = "fahrenheit",
+draw_shades = true,
+default_outline_color = "black",
+-- default_bar_size = 7,
+color0 = '080721',--Dark Blue - Background
+color1 = 'lightblue',--Light Blue - Base Text
+color2 = 'gold',--Gold - Monitored Item (Frequently Updates)
+color3 = 'orange',--Orange - Monitored Item (Infrequently Updates/Versions)
+color4 = 'green',--Green - Headers
+color5 = '0064ff',--Blue - ANSI Header Art
+color6 = 'wheat',--Wheat - Bar Fill
+color7 = 'purple',--Purple - Drive Labels
+color8 = 'grey',--Grey - ANSI Forks
+color9 = 'FFFFFF',--White - Unused (So far)
+}
+conky.text = [[
+${alignc}${font MesloLGS:bold:size=28}${color4} RAM  ${font}
+${voffset 4}${color1}Used ${color8}${color1}${alignr 5}${color6}${membar 20,200}
+${voffset -1}${color8}${color2}${execi 5 neofetch --stdout | grep "Memory:" | awk '{print $2}'}${font} ${color1}/ ${color2}${memperc} %${goto 200}${font MesloLGS:size=16}${color1}Free:${color2}${alignr}${memeasyfree}
+
+${alignc}${font MesloLGS:bold:size=28}${color4}  SYSTEM  ${font}
+${color1}Temperatures ${color1} CPU Core:${color2}${alignr 3}${exec sensors | grep 'CPUTIN' | awk 'NR==1{print $2}'}${font}${color1}
+# ${color8}${goto 99}${voffset -1}${color8}├${color1}${voffset 0} CPU Socket:${alignr 3}${color2}${hwmon 1 temp 1}${font}${color1}° F
+${color8}${color1}${voffset 0}Mainboard:${alignr 3}${color2}${exec sensors | grep 'SYSTIN' | awk 'NR==1{print $2}'}${font}${color1}
+${color1}System Uptime:${color2}${alignr 3}${uptime}${font}
+#${color1}USB Devices:${goto 105}${color2}${execpi 5 lsusb | grep -iv 'hub' | cut --fields=7- --delimiter=' ' | wc -l}${goto 150}${color1}Updates:${color2}${goto 253}${execi 3600 dnf check-update | wc -l | tail}${color}
+${color1}Processes:  ${color2}$processes${goto 200}${color1}Running:${alignr 3}${color2}$running_processes
+${color1}Version  OS:${alignr 3}${color3}Nobora 37${font}
+${color1}${voffset 0}Kernel:${alignr 3}${color3}${execi 86400 uname -r | sed -e 's/-generic//'}${font}
+
+${alignc}${voffset 4}${font MesloLGS:bold:size=28}${color4} STORAGE ${font}
+${voffset 4}${color7}/dev/nvme0n1p3${goto 200}${color1}Size:${color2}${alignr}${fs_size /}
+${color1}Type:${color2}${goto 60}${fs_type /}${color}${goto 200}${color1}Free:${color2}${alignr 3}${fs_free /}${color}
+${color1}Used:${color2}${goto 60}${fs_used /}${color6}${alignr}${fs_bar 15,200 /}
+${voffset 4}${color7}/dev/sda1${goto 200}${color1}Size:${color2}${alignr}${fs_size /mnt/storage/}
+${font}${color1}Type:${color2}${goto 60}${fs_type /mnt/storage/}${font}${goto 200}${color1}Free:${color2}${alignr 3}${fs_free /mnt/storage/}${font}
+${color1}Used:${color2}${goto 60}${fs_used /mnt/storage/}${font}${color6}${alignr}${fs_bar 15,200 /mnt/storage/}${color}
+${voffset 4}${color7}/dev/sdb1${goto 200}${color1}Size:${color2}${alignr}${fs_size /mnt/data/}
+${font}${color1}Type:${color2}${goto 60}${fs_type /mnt/data/}${font}${goto 200}${color1}Free:${color2}${alignr 3}${fs_free /mnt/data/}${font}
+${color1}Used:${color2}${goto 60}${fs_used /mnt/data/}${font}${color6}${alignr}${fs_bar 15,200 /mnt/data/}${color}
+
+
+]];

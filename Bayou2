@@ -1,0 +1,134 @@
+-- Remix by Dareboy58
+ 
+conky.config = {
+update_interval = 1,
+total_run_times = 0,
+alignment = "top_left",
+gap_x = 3,
+gap_y = 3,
+minimum_width = 450,
+maximum_width = 450,
+minimum_height = 875,
+maximum_height = 875,
+-- minimum_height = 750,
+net_avg_samples = 1,
+cpu_avg_samples = 1,
+own_window = true,
+own_window_type = "normal",
+own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+own_window_transparent = false,
+own_window_argb_visual = true,
+own_window_argb_value = 210,
+own_window_colour = "080721",
+double_buffer = true,
+use_xft = true,
+font = "Arial:size=16",
+short_units = true,
+draw_graph_borders = true,
+temperature_unit = "celsius",
+draw_shades = true,
+default_outline_color = "black",
+--default_bar_size = 7,
+color0 = '080721',--Dark Blue - Background
+color1 = 'lightblue',--Light Blue - Base Text
+color2 = 'gold',--Gold - Monitored Item (Frequently Updates)
+color3 = 'orange',--Orange - Monitored Item (Infrequently Updates/Versions)
+color4 = 'green',--Green - Headers
+color5 = '0064ff',--Blue - ANSI Header Art
+color6 = 'wheat',--Wheat - Bar Fill
+color7 = 'purple',--Purple - Drive Labels
+color8 = 'grey',--Grey - ANSI Forks
+color9 = 'FFFFFF',--White - Unused (So far)
+}
+conky.text = [[
+# CPU
+${voffset 10}${color5}${font Arial:size-12}${alignc}┌──────────────═╣${color4}${font FreeSans:bold:size 12}  CPU  ${font Arial:size 12}${color5}╠═──────────────┐
+${alignc}${voffset 4}${color3}${font Arial:bold:size=18}${execi 6000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | sed -e 's/Processor//'  | sed -e 's/(tm)/™/' | sed -e 's/(R)//' | sed -e 's/CPU//' | sed -e 's/@/:/' | sed -e 's/\ \ //' | sed -e 's/[0-9].[0-9][0-9]GHz//' | uniq}
+${goto 8}${voffset 5}${color1}${font Terminus(TTF):size=14}C01${goto 80}${color2}${font Terminus(TTF):bold:size=14}${cpu cpu1}${goto 100}${color1}%${goto 140}${color2}${freq 1}${goto 185}${font}${color1}Mhz${goto 235}${color1}${font Terminus(TTF):size=14}C02${goto 300}${color2}${font Terminus(TTF):bold:size=14}${cpu cpu2}${goto 325}${color1}%${goto 360}${color2}${font MesloNF:bold:size=16}${freq 2}${goto 410}${font}${color1}Mhz
+${goto 10}${color6}${cpubar cpu1 15,220}${goto 235}${color6}${cpubar cpu2 15,220}
+${goto 6}${voffset -16}${color9}${font Arial:size=10}└───────────────────────┘${goto 32}┴${goto 63}┴${goto 94}┴${goto 141}${color9}${font Arial:size=10}└───────────────────────┘${goto 163}┴${goto 192}┴${goto 223}┴
+${goto 8}${color1}${font Terminus(TTF):size=16}C03${goto 80}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu3}${goto 100}${color1}%${goto 140}${color2}${freq 3}${goto 185}${font}${color1}Mhz${goto 235}${color1}${font Terminus(TTF):size=16}C04${goto 300}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu4}${goto 325}${color1}%${goto 360}${color2}${font Terminus(TTF):bold:size=16}${freq 4}${goto 410}${font}${color1}Mhz
+${goto 10}${color6}${cpubar cpu3 15,220}${goto 235}${color6}${cpubar cpu4 15,220}
+${goto 6}${voffset -16}${color9}${font Arial:size=10}└────────────┘${goto 32}┴${goto 63}┴${goto 94}┴${goto 141}${color9}${font Arial:size=10}└────────────┘${goto 163}┴${goto 192}┴${goto 223}┴
+${goto 8}${color1}${font Terminus(TTF):size=16}C05${goto 80}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu5}${goto 100}${color1}%${goto 140}${color2}${freq 5}${goto 185}${font}${color1}Mhz${goto 235}${color1}${font Terminus(TTF):size=16}C06${goto 300}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu6}${goto 325}${color1}%${goto 360}${color2}${font Terminus(TTF):bold:size=16}${freq 6}${goto 410}${font}${color1}Mhz
+${goto 10}${color6}${cpubar cpu5 15,220}${goto 235}${color6}${cpubar cpu6 15,220}
+${goto 6}${voffset -16}${color9}${font Arial:size=10}└────────────┘${goto 32}┴${goto 63}┴${goto 94}┴${goto 141}${color9}${font Arial:size=10}└────────────┘${goto 163}┴${goto 192}┴${goto 223}┴
+${goto 8}${color1}${font Terminus(TTF):size=16}C07${goto 80}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu7}${goto 100}${color1}%${goto 140}${color2}${freq 7}${goto 185}${font}${color1}Mhz${goto 235}${color1}${font Terminus(TTF):size=16}C08${goto 300}${color2}${font Terminus(TTF):bold:size=16}${cpu cpu8}${goto 325}${color1}%${goto 360}${color2}${font Terminus(TTF):bold:size=16}${freq 8}${goto 410}${font}${color1}Mhz
+${goto 10}${color6}${cpubar cpu7 15,220}${goto 235}${color6}${cpubar cpu8 15,220}
+${goto 6}${voffset -16}${color9}${font Arial:size=10}└────────────┘${goto 32}┴${goto 63}┴${goto 94}┴${goto 141}${color9}${font Arial:size=10}└────────────┘${goto 163}┴${goto 192}┴${goto 223}┴
+# ALL CPU AVERAGE
+${goto 8}${color1}${font Terminus(TTF):size=16}Average: ${color2}${font Terminus(TTF):bold:size=16}${goto 126}${cpu cpu0}${color1} %${goto 206}${color2}${font Terminus(TTF):bold:size=16}${freq 0}${goto 241}${font}${color1}Mhz
+${goto 10}${color6}${cpubar cpu0 7,252}
+${goto 5}${voffset -16}${color9}${font Arial:size=10}└───────────────────────────┘${goto 65}┴${goto 128}┴${goto 198}┴
+# SYSTEM
+${color5}${font Arial:size-12}${alignc}┌─────────────═╣${color4}${font FreeSans:bold:size 12}  SYSTEM  ${font Arial:size 12}${color5}╠═─────────────┐${font}
+${color1}Temperatures ${color8}┬${color1} CPU Core:${color2}${alignr 3}${font Arial:bold:size=16}${exec sensors | grep 'CPUTIN' | awk 'NR==1{print $2}'}${font}${color1}
+# ${color8}${goto 99}${voffset -1}${color8}├${color1}${voffset 0} CPU Socket:${alignr 3}${color2}${font Arial:bold:size=11}${hwmon 1 temp 1}${font}${color1}° F
+${color8}${goto 99}${voffset -1}${color8}└${color1}${voffset 0} Mainboard:${alignr 3}${color2}${font Arial:bold:size=16}${exec sensors | grep 'SYSTIN' | awk 'NR==1{print $2}'}${font}${color1}
+#${color1}Fan Speeds ${goto 98}${color8}┬${color1} CPU:${color2}${alignr}${font Arial:bold:size=16}${hwmon 2 fan 1}${font} ${color1}rpm
+#${color8}${goto 98}${voffset -1}└${color1}${voffset 0} Case:${color2}${alignr}${font Arial:bold:size=16}${hwmon 2 fan 3}${font} ${color1}rpm
+#
+${color1}System Uptime:${color2}${alignr 3}${font Arial:bold:size=16}${uptime}${font}
+${color1}USB Devices:${goto 150}${color2}${font Arial:bold:size=16}${execpi 5 lsusb | grep -iv 'hub' | cut --fields=7- --delimiter=' ' | wc -l}${font}${goto 235}${color1}Updates:${color2}${font Arial:bold:size=16}${goto 340}${execi 3600 dnf check-update | wc -l | tail}${font}${color}
+#${color1}USB Devices:${goto 105}${color2}${font Arial:bold:size=16}${execpi 5 lsusb | grep -iv 'hub' | cut --fields=7- --delimiter=' ' | wc -l}${font}${goto 150}${color1}Updates:${color2}${font Arial:bold:size=16}${goto 253}${execi 3600 aptitude search "~U" | wc -l | tail}${font}${color}
+${color1}Processes:  ${color2}${font Arial:bold:size=16}$processes${font}${goto 245}${color1}Running:${goto 400}${color2}${font Arial:bold:size=16}$running_processes${font}
+${color1}Version${voffset 0}┬${color1}DE:${alignr 3}${font Arial:bold:size=16}${color3}${execi 65000 neofetch --stdout | grep "DE:" | awk '{print $2'}} ${execi 65000 neofetch --stdout | grep "DE:" | awk '{print $3'}}${font}
+#${color8}${goto 54}${voffset 0}├${color1}OS:${alignr 3}${font Arial:bold:size=16}${color3}${execi 65000 lsb_release -ds | awk '{print $1'}} ${execi 65000 lsb_release -cs | awk '{print $1'}}${font}
+${goto 54}${color8}└${color1}Kernel:${alignr 3}${font Arial:bold:size=16}${color3}${kernel}
+# VIDEO CARD
+#${voffset 4}${color5}${font Arial:size-12}${alignc}┌═╣${font FreeSans:bold:size 12}${color4}${execi 65000 nvidia-smi --query-gpu=gpu_name --format=csv,noheader,nounits}${font Arial:size-12}${color5}╠═┐${font}
+#${voffset 4}${color1}VRAM:${font Arial:bold:size=16}${color2}${goto 110}${execi 5 nvidia-smi --query-gpu=memory.used --format=csv,noheader}${font}${color1}  of  ${font Arial:bold:size=16}${color2}${execi 5 nvidia-smi --query-gpu=memory.total --format=csv,noheader}
+#${color1}${font Arial:size=16}Fan 1 Speed: ${color2}${font Arial:bold:size=16}${goto 115}${execi 5 nvidia-settings -q [fan:0]/GPUCurrentFanSpeedRPM -t} ${font}${color1}rpm${alignr}${color2}${font Arial:bold:size=16}${exec nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} ${font}${color1}%
+#${color1}${font Arial:size=16}Fan 2 Speed: ${color2}${font Arial:bold:size=16}${goto 115}${execi 5 nvidia-settings -q [fan:1]/GPUCurrentFanSpeedRPM -t} ${font}${color1}rpm${alignr}${color2}${font Arial:bold:size=16}${exec nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} ${font}${color1}%
+#${color1}GPU Temp :${color2}${alignr}${font Arial:bold:size=16}${nvidia temp}${font}${color1}°C
+#${color1}GPU Used :${color2}${alignr}${nvidia gpuutil}${color1}%
+#${color1}GPU Clock :${color2}${alignr}${nvidia gpufreq} ${color1}MHz
+#${color1}Mem Clock :${color2}${alignr}${nvidia mtrfreq} ${color1}Mhz
+#${color1}Powers Used :${color2}${alignr}${execpi 10 nvidia-smi -q | grep 'Power Draw' | awk '{print $4'}} ${color}W
+#${color1}Powers Total :${color2}${alignr}${execi 65000 nvidia-smi -q | grep 'Default Power Limit' | awk '{print $5'}} ${color}W
+#########${color1}Version  ${color8}┬${color1}  X.org:${alignr 3}${font Arial:bold:size=16}${color3}${exec dpkg -l |grep xserver-xorg-core | awk '{print $3}'}
+#${color1}${goto 61}${voffset -1}${color8}└${color1}${voffset 0}  Driver:${alignr 3}${font Arial:bold:size=16}${color3}${execi 65000 nvidia-smi | grep "Driver Version"| awk {'print $3'}}
+# RAM
+${voffset 4}${color5}${font Arial:size-11}${alignc}┌─────────────═╣${font FreeSans:bold:size-12}${color4} ${memmax} RAM ${font Arial:size-12}${color5}╠═─────────────┐
+${voffset 4}${color1}${font Arial:size=16}Used ${color8}┬${color1}${alignr 5}${color6}${membar 7,200}
+${voffset -1}${color8}${font Arial:size=16}${goto 43}└${color2}${goto 60}${font Arial:bold:size=16}${execi 5 neofetch --stdout | grep "Memory:" | awk '{print $2}'}${font} ${color1}/ ${color2}${font Arial:bold:size=16}${memperc} %${goto 190}${font Arial:size=16}${color1}Free:${color2}${font Arial:bold:size=16}${alignr}${memeasyfree}
+# SWAP
+${voffset 4}${color5}${font Arial:size-12}${alignc}┌──────────────═╣${font FreeSans:bold:size-12}${color4} SWAP ${font Arial:size-12}${color5}╠═──────────────┐${font}
+${voffset 4}${color1}Used ${color8}┬${alignr}${color6}${swapbar 7,200}
+${voffset -1}${color8}${font Arial:size=16}${goto 42}└${voffset 0}${color2}${goto 60}${font Arial:bold:size=16}${swap}${font}${color1} / ${color2}${font Arial:bold:size=16}${swapperc} %${goto 170}${font Arial:size=16}Free:${color2}${alignr}${font Arial:bold:size=16}${swapfree}
+# STORAGE
+#${voffset 4}${color5}${font Arial:size-12}${alignc}┌────═╣${font FreeSans:bold:size-12}${color4} STORAGE ${font Arial:size-12}${color5}╠═────┐
+#${voffset 4}${font Arial size=16}${color7}NVME${goto 160}${color1}Size:${color2}${alignr}${font Arial:bold:size-11}${fs_size /}${font}
+#${color1}Type:${color2}${font Arial:bold:size-11}${goto 60}${fs_type /}${color}${font}${goto 160}${color1}Free:${color2}${alignr 3}${font Arial:bold:size-11}${fs_free /}${font}${color}
+#${color1}Used:${font Arial:bold:size-11}${color2}${goto 60}${fs_used /}${color6}${alignr}${fs_bar 7,135 /}${font}
+#
+#${voffset 4}${font Arial size=16}${color7}HD1${goto 160}${color1}Size:${color2}${font Arial:bold:size-11}${alignr}${fs_size /media/Storage/}
+#${font}${color1}Type:${color2}${goto 60}${font Arial:bold:size-11}${execi 65000 cat /etc/fstab | grep "Storage" | awk {'print $3'}}${font}${goto 160}${color1}Free:${color2}${alignr 3}${font Arial:bold:size-11}${fs_free /media/Storage/}${font}
+#${color1}Used:${color2}${font Arial:bold:size-11}${goto 60}${fs_used /media/Storage/}${font}${color6}${goto 129}${fs_bar 7,135 /media/Storage/}${color}
+#
+#${voffset 4}${font Arial size=16}${color7}HD2${goto 160}${color1}Size:${color2}${font Arial:bold:size-11}${alignr}${fs_size /media/Films/}
+#${font}${color1}Type:${color2}${goto 60}${font Arial:bold:size-11}${execi 65000 cat /etc/fstab | grep "Films" | awk {'print $3'}}${font}${goto 160}${color1}Free:${color2}${alignr 3}${font Arial:bold:size-11}${fs_free /media/Films/}${font}
+#${color1}Used:${color2}${font Arial:bold:size-11}${goto 60}${fs_used /media/Films/}${font}${color6}${goto 129}${fs_bar 7,135 /media/Films/}
+# NET
+#${voffset 4}${color5}${font Arial:size-12}${alignc}┌────═╣${font FreeSans:bold:size-12}${color4} NETWORK ${font Arial:size-12}${color5}╠═────┐
+#${goto 7}${color1}${voffset 0}${if_existing /sys/class/net/enp42s0/operstate up}${font}${goto 30}${color1}${font Terminus(TTF):size=13}Inbound:${goto 95}${font Arial:bold:size=13}${color2}${voffset -1}${tcp_portmon 1 32767 count}${color1}${goto 170}${voffset -1}${font Terminus(TTF):size=13}Outbound:${font Arial:bold:size=13}${color2}${goto 245}${voffset -1}${tcp_portmon 32768 61000 count}
+#${goto 10}${voffset 5}${color}${font}${color}LAN : ${color2}${addr enp42s0}
+#${goto 10}${voffset 5}${color}Upload: ${color2}${upspeed enp42s0}${goto 155}${color5}${upspeedgraph enp42s0 10,100 fc8c3b c6396b -t}
+#${goto 10}${color}Download: ${color2}${downspeed enp42s0}${goto 155}${color5}${downspeedgraph enp42s0 10,100 fc8c3b c6396b -t}
+#${goto 10}${voffset 5}${color}Up: ${color2}${totalup enp42s0}${color}${alignr 10}Down: ${color2}${totaldown enp42s0} ${else} ${if_existing /sys/class/net/wlan0/operstate up}
+# -- Wifi
+#${goto 10}${voffset 5}${color}${color}LAN : ${color2}${addr wlan0}
+#${goto 10}${voffset 5}${color}Upload: ${color2}${upspeed wlan0}${goto 175}${color5}${upspeedgraph wlan0 10,100 fc8c3b c6396b -t}
+#${goto 10}${color}Download: ${color2}${downspeed wlan0}${goto 175}${color5}${downspeedgraph wlan0 10,100 fc8c3b c6396b -t}
+#${goto 10}${voffset 5}${color}Up: ${color2}${totalup wlan0}${color}${alignr 10}Down: ${color2}${totaldown wlan0}
+# -- Signal
+#${goto 0}${voffset 5}${color4}Wifi Signal
+#${goto 10}${voffset 5}${color FF0000}0%${goto 240}${color FF7F00}${wireless_link_qual_perc wlan0}%
+#${goto 10}${color FFFFFF}${wireless_link_bar 12,260 wlan0}
+#${goto 10}${color FF0000}Bad ${goto 125}${color FFFF00}Good ${goto 240}${color FF7F00}Excellent
+# -- Battery
+#${goto 10}${voffset 5}${color}Battery:${color FF7F00}${goto 55}${battery_time BAT1}
+#${goto 10}${color 008000}${battery_bar 20,260 BAT1}${goto 200}${color FF0000}${goto 85}${battery_percent BAT1}% ${else}${if_existing /sys/class/net/enp42s0/operstate up}${else}${color FF0000}${alignc}${font Arial:bold:size=16}${blink "NO CONNECTION!"}${endif}${endif}${endif}
+#${color}${stippled_hr}
+]]
+ 

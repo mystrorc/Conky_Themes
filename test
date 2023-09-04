@@ -1,0 +1,79 @@
+# Conky settings
+update_interval 1
+double_buffer yes
+no_buffers yes
+use_xft yes
+xftfont Open Sans SemiBold:size=10
+# Window specifications
+own_window yes
+own_window_type dock
+own_window_hints undecorated,ontop,skip_taskbar
+minimum_size 390
+maximum_width 390
+xinerama_head 1
+# Alignment
+alignment top_right
+gap_x 8
+gap_y 0
+border_inner_margin 8
+border_outer_margin 0
+TEXT
+${font :bold:}${alignc}${time %a %d/%m/20%y %H:%M:%S}
+${alignc}Kernel: ${kernel}
+${alignc}Uptime: $uptime
+${color 1793d1}${font ConkySymbols:size=50}${offset 10}${voffset -65}t${font}
+${color white}${hr 1}
+#Temp Block
+${color White}${font ConkySymbols:size=18:bold}h${font :bold:}Temps ${goto 150}CPU: ${hwmon 2 temp 2}°C${goto 260}CPU Fan${alignr}${hwmon 2 fan 2} RPM
+${color EE4444}${execbar sensors | grep CPUTIN | awk '{print $2}'}
+${color LightBlue}${execbar sensors | grep fan1 | awk 'NR==1{print $2/35}'}
+${color White}GPU Edge: ${hwmon 3 temp 1}°C ${goto 150}Junc: ${hwmon 3 temp 2}°C${goto 260}GPU Fan${alignr}${hwmon 3 fan 1} RPM
+${color EE4444}${execbar sensors | grep edge | awk '{print $2}'}
+${color LightBlue}${execbar sensors | grep fan1 | awk 'NR==2{print $2/35}'}
+${color White}Mobo: ${hwmon 2 temp 1}°C ${goto 110}Int.Fan: ${hwmon 2 fan 5} RPM${goto 260}Exh.Fan${alignr}${hwmon 2 fan 7} RPM
+${color EE4444}${execbar sensors | grep SYSTIN | awk '{print $2}'}
+${color LightBlue}${execbar sensors | grep fan2 | awk '{print $2/35}'}
+${color white}${hr 1}
+#GPU Block
+${color white}${font ConkySymbols:size=20}n${font :bold:} GPU${font}${goto 100}XFX AMD Radeon RX 6600XT @ ${exec awk 'NR==2{print $2}' /sys/class/drm/card0/device/pp_dpm_sclk}${alignr}${font :bold:}${execi 5 radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10}%${font}
+${color Tomato}${execbar "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10"}
+${color Tomato}${execgraph "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10" 30,190 000000 FF6347} ${execgraph "radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10" 30,190 000000 FF6347} ${voffset 13} ${goto 25}${color white}GPU Usage: ${execi 5 radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10}%${voffset -30}${goto 215}VRAM Usage: ${execi 5 radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10}%
+${color Tomato}${execgraph "awk 'NR==1{print $2/29}' /sys/class/drm/card0/device/pp_dpm_sclk" 30,190 000000 FF6347} ${execgraph "sensors | grep fan1 | awk 'NR==2{print $2/35}'" 30,190 000000 FF6347} ${voffset 13} ${goto 25}${color white}GPU Freq: ${exec awk 'NR==2{print $2}' /sys/class/drm/card0/device/pp_dpm_sclk}${voffset -30}${goto 215}GPU FAN: ${exec sensors | grep fan1 | awk 'NR==2{print $2}'} RPM
+${hr 1}
+#CPU Block
+${color White}${font ConkySymbols:size=20}f${font :bold:} CPU${font}${goto 115}AMD Ryzen 5 5600G @ ${freq_g}GHz${alignr}${font :bold:}${cpu}%${font}
+${color orange}${cpubar}
+${color orange}${offset 10}${cpugraph cpu1 30,90 000000 DDAA00} ${cpugraph cpu2 30,90 000000 DDAA00} ${cpugraph cpu3 30,90 000000 DDAA00} ${cpugraph cpu4 30,90 000000 DDAA00} ${voffset 12} ${color White} ${goto 25}CPU 1: ${cpu cpu1}% ${goto 120}CPU 2: ${cpu cpu2}% ${goto 215}CPU 3: ${cpu cpu2}% ${voffset -29} ${goto 307}CPU 4: ${cpu cpu4}%
+${color orange}${offset 10}${cpugraph cpu5 30,90 000000 DDAA00} ${cpugraph cpu6 30,90 000000 DDAA00} ${cpugraph cpu7 30,90 000000 DDAA00} ${cpugraph cpu8 30,90 000000 DDAA00} ${voffset 12} ${color White} ${goto 25}CPU 5: ${cpu cpu5}% ${goto 120}CPU 6: ${cpu cpu6}% ${goto 215}CPU 7: ${cpu cpu7}% ${voffset -29} ${goto 307}CPU 8: ${cpu cpu8}%
+${color orange}${offset 10}${cpugraph cpu9 30,90 000000 DDAA00} ${cpugraph cpu10 30,90 000000 DDAA00} ${cpugraph cpu11 30,90 000000 DDAA00} ${cpugraph cpu12 30,90 000000 DDAA00} ${voffset 12} ${color White} ${goto 25}CPU 9: ${cpu cpu9}% ${goto 115}CPU 10: ${cpu cpu10}% ${goto 210}CPU 11: ${cpu cpu11}% ${voffset -29} ${goto 304}CPU 12: ${cpu cpu12}%
+${hr 1}
+#RAM Block
+${color White}${font ConkySymbols:size=16}j${font :bold:} RAM${goto 150}$mem / $memmax${alignr}${memperc}%${font}
+${color LightGreen}${membar}
+${color White}${font :size 11:bold}${offset 5}Top Processes ${alignr}${offset -5}CPU%${offset 10}MEM%
+${color LightGreen}${memgraph 120,390 000000 228B22}${voffset -135}
+${color White}${offset 5}${top name 1} ${alignr 10}${offset -13}${top cpu 1}${offset 15}${top mem 1}
+${color White}${offset 5}${top name 2} ${alignr 10}${offset -13}${top cpu 2}${offset 15}${top mem 2}
+${color White}${offset 5}${top name 3} ${alignr 10}${offset -13}${top cpu 3}${offset 15}${top mem 3}
+${color White}${offset 5}${top name 4} ${alignr 10}${offset -13}${top cpu 4}${offset 15}${top mem 4}
+${color White}${offset 5}${top name 5} ${alignr 10}${offset -13}${top cpu 5}${offset 15}${top mem 5}
+${color White}${voffset 5}Total: $processes${goto 130}Cache: ${cached} ${alignr}Buffer: ${buffers}
+${hr 1}
+#File System Block
+${color White}${font ConkySymbols:size=20}k${font :Bold:} FILE SYSTEM${alignr}ROOT ${fs_used_perc /}% | SSD ${fs_used_perc /home/divi/Kingston}% | HDD ${fs_used_perc /home/divi/Seagate}%${font}
+${color DarkCyan}${fs_bar /}
+${color White}ROOT ${goto 50} ${fs_type /}${goto 105}${color DarkCyan}${fs_bar 12,88 /} ${color}${alignr}${fs_free /} / ${fs_size /}
+${color White}SSD ${goto 50} ${fs_type /home/divi/Kingston}${goto 105}${color DarkCyan}${fs_bar 12,176 /home/divi/Kingston} ${color}${alignr} ${fs_free /home/divi/Kingston} / ${fs_size /home/divi/Kingston}
+${color White}HDD ${goto 50} ${fs_type /home/divi/Seagate}${goto 105}${color DarkCyan}${fs_bar 12,186 /home/divi/Seagate} ${color}${alignr} ${fs_free /home/divi/Seagate} / ${fs_size /home/divi/Seagate}
+${hr 1}
+#Netzwerk Block
+${color White}${font ConkySymbols:size=20}b${font :Bold:} NETWORK${font} Local IP: ${addr enp6s0} ${if_up tap0} | LAN IP: ${addr tap0}${endif}
+${color orange}${offset 3}${downspeedgraph enp6s0 50,190 000000 CC9900}${goto 205}${color SteelBlue}${upspeedgraph enp6s0 50,190 000000 4682B4}
+${color White}${voffset -55}${offset 10}Download${goto 210}Upload${offset 10}
+${offset 10} ${downspeedf enp6s0} kb/s ${goto 210}${upspeedf enp6s0} kb/s
+# RadTop grep ${goto 100} ${exec radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10}
+# RadTop awk ${goto 100} ${exec radeontop -d- -l1 | awk '{print $37}' | grep -o '[0-9.]\{1,5\}'}
+# Ref awk ${goto 100} ${exec awk 'NR==1{print $2}' /sys/class/drm/card0/device/pp_dpm_sclk}
+# Ref awk ${goto 100} ${exec awk 'NR==2{print $2}' /sys/class/drm/card0/device/pp_dpm_sclk}
+# Ref awk ${goto 100} ${exec awk 'NR==3{print $2}' /sys/class/drm/card0/device/pp_dpm_sclk}
+# Ref ${goto 100} ${exec grep -Po '\d+:\s\K(\d+)(?=.*\*$)' /sys/class/drm/card0/device/pp_dpm_sclk}

@@ -1,0 +1,71 @@
+conky.config = {
+update_interval = 1,
+total_run_times = 0,
+alignment = "top_middle",
+gap_x = 3,
+gap_y = 3,
+minimum_width = 400,
+maximum_width = 400,
+maximum_height = 875,
+-- minimum_height = 750,
+net_avg_samples = 1,
+cpu_avg_samples = 1,
+own_window = true,
+own_window_type = "normal",
+own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+own_window_transparent = false,
+own_window_argb_visual = true,
+own_window_argb_value = 210,
+own_window_colour = "080721",
+double_buffer = true,
+use_xft = true,
+font = "MesloLGS:size=16",
+short_units = true,
+draw_graph_borders = true,
+temperature_unit = "fahrenheit",
+draw_shades = true,
+default_outline_color = "black",
+-- default_bar_size = 7,
+color0 = '080721',--Dark Blue - Background
+color1 = 'lightblue',--Light Blue - Base Text
+color2 = 'gold',--Gold - Monitored Item (Frequently Updates)
+color3 = 'orange',--Orange - Monitored Item (Infrequently Updates/Versions)
+color4 = 'green',--Green - Headers
+color5 = '0064ff',--Blue - ANSI Header Art
+color6 = 'wheat',--Wheat - Bar Fill
+color7 = 'purple',--Purple - Drive Labels
+color8 = 'grey',--Grey - ANSI Forks
+color9 = 'FFFFFF',--White - Unused (So far)
+}
+conky.text = [[
+# Time & Date
+${alignc}${font MesloLGS:bold:size=36}${color1}${time %I:%M:%S%P}${font}
+${alignc}${color1}${time %A %B %e, %Y}
+
+${alignc}${font MesloLGS:bold:size=28}${color4}CPU${font}
+${goto 8}${color1}Average: ${color2}${goto 170}${cpu cpu0}${color1} %${goto 260}${color2}${freq 0}${goto 370}${color1}Mhz
+${goto 10}${color6}${cpubar cpu0 20,390}
+${color1}Temperatures${color1} CPU Core:${color2}${alignr 3}${exec sensors | grep 'CPUTIN' | awk 'NR==1{print $2}'}${color1}
+
+${alignc}${font MesloLGS:bold:size=28}${color4}GPU${font}
+${color1}Temperature$alignr${color2}${execi 1 sensors | grep 'edge' | cut -c16-17 | sed '/^$/d'} °C
+${color1}Power Usage$alignr${execi 1 sensors | grep 'PPT' | cut -c16-22 | sed '/^$/d'}
+# Fan$alignr${execi 1 sensors | grep 'gpufan' | cut -c14-21 | sed '/^$/d'}
+Load$alignr${execi 1 radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-7 }%
+VRAM$alignr${execi 1 radeontop -d- -l1 | grep -o -P '.{0,6}.mb.{0,0}' | head -1 | cut -c1-4} MB
+GPU Clock${alignr}${execi 1 radeontop -d- -l1 | grep -o -P -m2 '.{0,5}.ghz.{0,0}' | tail -n1 | cut -c1-4} GHz
+VRAM Clock$alignr${execi 1 radeontop -d- -l1 | grep -o -P -m2 '.{0,5}.ghz.{0,0}' | head -1 | cut -c1-4} Ghz
+
+#
+### GPU
+#
+${color1}$stippled_hr$color
+${font2}${color1}GPU ${color} ${alignr}${color3} Radeon 6700 XT 
+### @ ${color3}${exec grep -Po '\d+:\s\K(\d+)(?=.*\*$)' /sys/class/drm/card1/device/pp_dpm_sclk} GHz$color${font}
+${color1}Usage:  ${alignr}${color3}${exec cat /sys/class/drm/card1/device/gpu_busy_percent}%${color}${alignr}${color}
+${color1}Driver: ${alignr}${color3}Mesa ${execi 60 glxinfo | grep Version | cut -c 14-23}${color}
+${color1}Temp Edge: ${alignr}${color3}${execi 5 sensors | grep edge | cut -c 16-23}${alignr -5}${color}
+${color1}Temp Junction: ${alignr}${color3}${execi 5 sensors | grep junction | cut -c 16-23}${color}
+${color6}${execgraph "cat /sys/class/drm/card1/device/gpu_busy_percent" 24,390 000000 FFA500}
+
+]];
